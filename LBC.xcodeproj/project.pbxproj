@@ -21,6 +21,7 @@
 		2C2EE41B2C071C9900BDC1FD /* ProductModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2EE41A2C071C9900BDC1FD /* ProductModel.swift */; };
 		2C2EE41D2C071CB500BDC1FD /* CategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2EE41C2C071CB500BDC1FD /* CategoryModel.swift */; };
 		2C2EE4212C071D3C00BDC1FD /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2EE4202C071D3C00BDC1FD /* ProductDetailViewController.swift */; };
+		2C2EE4232C071D8200BDC1FD /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2EE4222C071D8200BDC1FD /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		2C2EE41A2C071C9900BDC1FD /* ProductModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductModel.swift; sourceTree = "<group>"; };
 		2C2EE41C2C071CB500BDC1FD /* CategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryModel.swift; sourceTree = "<group>"; };
 		2C2EE4202C071D3C00BDC1FD /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
+		2C2EE4222C071D8200BDC1FD /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				2C2EE3E92C07164400BDC1FD /* Assets.xcassets */,
+				2C2EE4222C071D8200BDC1FD /* Constants.swift */,
 			);
 			path = Ressources;
 			sourceTree = "<group>";
@@ -325,6 +328,7 @@
 				2C2EE4212C071D3C00BDC1FD /* ProductDetailViewController.swift in Sources */,
 				2C2EE4192C071C6C00BDC1FD /* HomeViewModel.swift in Sources */,
 				2C2EE3E52C07164300BDC1FD /* HomeViewController.swift in Sources */,
+				2C2EE4232C071D8200BDC1FD /* Constants.swift in Sources */,
 				2C2EE41B2C071C9900BDC1FD /* ProductModel.swift in Sources */,
 				2C2EE3E12C07164300BDC1FD /* AppDelegate.swift in Sources */,
 				2C2EE3E32C07164300BDC1FD /* SceneDelegate.swift in Sources */,
