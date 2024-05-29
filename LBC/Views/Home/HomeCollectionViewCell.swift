@@ -20,10 +20,8 @@ final class HomeCollectionViewCell: UICollectionViewCell {
     
     private var thumbImageView: UIImageView = {
         let iv = UIImageView()
-        iv.image = UIImage(systemName: "photo")
-        iv.contentMode = .scaleAspectFit
-        iv.tintColor = .black
-        iv.backgroundColor = .lightGray
+        iv.image = UIImage(named: "leboncoin_placeholder")
+        iv.contentMode = .scaleAspectFill
         iv.layer.cornerRadius = 8.0
         iv.layer.masksToBounds = true
         iv.translatesAutoresizingMaskIntoConstraints = false
@@ -70,7 +68,7 @@ final class HomeCollectionViewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        thumbImageView.image = UIImage(systemName: "photo")
+        thumbImageView.image = UIImage(named: "leboncoin_placeholder")
         cancellables.removeAll()
     }
     
