@@ -14,6 +14,7 @@ enum NetworkServiceError: Error {
     case invalidResponse
     case serverError
     case requestFailed(_: Error)
+    case decodingFailed(_: Error)
 }
 
 struct NetworkService {
