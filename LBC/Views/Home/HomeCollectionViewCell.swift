@@ -6,12 +6,17 @@
 //
 
 import UIKit
+import Combine
 
 final class HomeCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     
     static let identifier: String = "HomeCollectionViewCell"
+    
+    private var viewModel: ItemViewModel?
+    
+    private var cancellables = Set<AnyCancellable>()
     
     private var thumbImageView: UIImageView = {
         let iv = UIImageView()
@@ -63,6 +68,12 @@ final class HomeCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        thumbImageView.image = UIImage(systemName: "photo")
+        cancellables.removeAll()
+    }
+    
     // MARK: - Setup Views
     
     func setupConstraints() {
@@ -86,9 +97,21 @@ final class HomeCollectionViewCell: UICollectionViewCell {
     
     func configure(model: ProductModel) {
         
+        viewModel = ItemViewModel(product: model)
+        
         titleLabel.text = model.title
         priceLabel.text = "\(model.price)€"
         categoryLabel.text = model.category
         creationDateLabel.text = model.creationDate
+        
+        viewModel?.$imageData.sink(receiveValue: { [weak self] data in
+            
+            if let imageData = data, let image = UIImage(data: imageData) {
+                self?.thumbImageView.image = image
+            }
+        })
+        .store(in: &cancellables)
+        
+        viewModel?.loadImage()
     }
 }

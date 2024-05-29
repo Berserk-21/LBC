@@ -24,6 +24,7 @@
 		2C2EE4232C071D8200BDC1FD /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2EE4222C071D8200BDC1FD /* Constants.swift */; };
 		2C2EE4262C071DE000BDC1FD /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2EE4252C071DE000BDC1FD /* NetworkService.swift */; };
 		2C2EE4292C07252200BDC1FD /* Anchors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2EE4282C07252200BDC1FD /* Anchors.swift */; };
+		2C8C20D52C07727E00628BE2 /* itemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8C20D42C07727E00628BE2 /* itemViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		2C2EE4222C071D8200BDC1FD /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		2C2EE4252C071DE000BDC1FD /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		2C2EE4282C07252200BDC1FD /* Anchors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anchors.swift; sourceTree = "<group>"; };
+		2C8C20D42C07727E00628BE2 /* itemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = itemViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				2C2EE4182C071C6C00BDC1FD /* HomeViewModel.swift */,
+				2C8C20D42C07727E00628BE2 /* itemViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -355,6 +358,7 @@
 				2C2EE4232C071D8200BDC1FD /* Constants.swift in Sources */,
 				2C2EE41B2C071C9900BDC1FD /* ProductModel.swift in Sources */,
 				2C2EE3E12C07164300BDC1FD /* AppDelegate.swift in Sources */,
+				2C8C20D52C07727E00628BE2 /* itemViewModel.swift in Sources */,
 				2C2EE3E32C07164300BDC1FD /* SceneDelegate.swift in Sources */,
 				2C2EE4152C071C2B00BDC1FD /* HomeCollectionView.swift in Sources */,
 			);
