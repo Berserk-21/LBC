@@ -8,7 +8,7 @@
 import UIKit
 
 protocol HomeCollectionViewInterface: AnyObject {
-    
+    func updateData()
 }
 
 final class HomeCollectionView: UICollectionView {
@@ -47,7 +47,7 @@ final class HomeCollectionView: UICollectionView {
 extension HomeCollectionView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return viewModel?.products.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -55,7 +55,9 @@ extension HomeCollectionView: UICollectionViewDataSource {
             fatalError("Make sure this does not happen")
         }
         
-        cell.configure(model: HomeViewModel())
+        if let model = viewModel?.products[indexPath.row] {
+            cell.configure(model: model)
+        }
         
         return cell
     }
@@ -65,5 +67,8 @@ extension HomeCollectionView: UICollectionViewDataSource {
 
 extension HomeCollectionView: HomeCollectionViewInterface {
     
+    func updateData() {
+        reloadData()
+    }
     
 }

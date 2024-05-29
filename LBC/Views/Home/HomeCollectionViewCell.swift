@@ -76,11 +76,11 @@ final class HomeCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
-    func configure(model: HomeViewModel) {
+    func configure(model: ProductModel) {
         
-        titleLabel.text = "Dummy title"
-        priceLabel.text = "5000€"
-        categoryLabel.text = "Vehicule"
-        creationDateLabel.text = "10 septembre 2021"
+        titleLabel.text = model.title
+        priceLabel.text = "\(model.price)€"
+        categoryLabel.text = model.category
+        creationDateLabel.text = model.creationDate
     }
 }
