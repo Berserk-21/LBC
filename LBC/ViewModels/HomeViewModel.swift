@@ -9,5 +9,9 @@ import Foundation
 
 final class HomeViewModel {
     
+    weak var collectionView: HomeCollectionViewInterface?
     
+    init() {
+        
+    }
 }
