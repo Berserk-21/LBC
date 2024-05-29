@@ -106,7 +106,7 @@ extension HomeCollectionView: UICollectionViewDelegateFlowLayout {
         
         let itemWidth = (availableWidth - CGFloat(totalInterItemSpacing)) / CGFloat(numberOfColumns)
         
-        let imageHeight: CGFloat = itemWidth * 4/3
+        let imageHeight: CGFloat = itemWidth * Constants.HomeCollectionViewCell.imageRatio
                 
         var itemHeight: CGFloat = imageHeight
         

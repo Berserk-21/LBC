@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 final class HomeCollectionViewCell: UICollectionViewCell {
     
@@ -13,12 +14,14 @@ final class HomeCollectionViewCell: UICollectionViewCell {
     
     static let identifier: String = "HomeCollectionViewCell"
     
+    private var viewModel: ItemViewModel?
+    
+    private var cancellables = Set<AnyCancellable>()
+    
     private var thumbImageView: UIImageView = {
         let iv = UIImageView()
-        iv.image = UIImage(systemName: "photo")
-        iv.contentMode = .scaleAspectFit
-        iv.tintColor = .black
-        iv.backgroundColor = .lightGray
+        iv.image = UIImage(named: "leboncoin_placeholder")
+        iv.contentMode = .scaleAspectFill
         iv.layer.cornerRadius = 8.0
         iv.layer.masksToBounds = true
         iv.translatesAutoresizingMaskIntoConstraints = false
@@ -63,6 +66,12 @@ final class HomeCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        thumbImageView.image = UIImage(named: "leboncoin_placeholder")
+        cancellables.removeAll()
+    }
+    
     // MARK: - Setup Views
     
     func setupConstraints() {
@@ -70,7 +79,7 @@ final class HomeCollectionViewCell: UICollectionViewCell {
         var constraints = [NSLayoutConstraint]()
         
         constraints.append(thumbImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 1.0))
-        constraints.append(thumbImageView.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 4/3))
+        constraints.append(thumbImageView.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: Constants.HomeCollectionViewCell.imageRatio))
         
         let stackView = UIStackView(arrangedSubviews: [thumbImageView, titleLabel, priceLabel, categoryLabel, creationDateLabel, UIView()])
         stackView.axis = .vertical
@@ -86,9 +95,21 @@ final class HomeCollectionViewCell: UICollectionViewCell {
     
     func configure(model: ProductModel) {
         
+        viewModel = ItemViewModel(product: model)
+        
         titleLabel.text = model.title
         priceLabel.text = "\(model.price)€"
         categoryLabel.text = model.category
         creationDateLabel.text = model.creationDate
+        
+        viewModel?.$imageData.sink(receiveValue: { [weak self] data in
+            
+            if let imageData = data, let image = UIImage(data: imageData) {
+                self?.thumbImageView.image = image
+            }
+        })
+        .store(in: &cancellables)
+        
+        viewModel?.loadImage()
     }
 }
