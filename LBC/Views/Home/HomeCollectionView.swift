@@ -22,7 +22,7 @@ final class HomeCollectionView: UICollectionView {
     init(viewModel: HomeViewModel? = nil) {
         self.viewModel = viewModel
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 200.0, height: 200.0)
+        layout.itemSize = CGSize(width: 200.0, height: 400.0)
         layout.minimumInteritemSpacing = 0.0
         layout.minimumLineSpacing = 0.0
         super.init(frame: .zero, collectionViewLayout: layout)
@@ -55,7 +55,7 @@ extension HomeCollectionView: UICollectionViewDataSource {
             fatalError("Make sure this does not happen")
         }
         
-        cell.backgroundColor = .red
+        cell.configure(model: HomeViewModel())
         
         return cell
     }

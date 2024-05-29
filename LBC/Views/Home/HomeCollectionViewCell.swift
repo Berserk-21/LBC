@@ -16,7 +16,9 @@ final class HomeCollectionViewCell: UICollectionViewCell {
     private var thumbImageView: UIImageView = {
         let iv = UIImageView()
         iv.image = UIImage(systemName: "photo")
+        iv.contentMode = .scaleAspectFit
         iv.tintColor = .black
+        iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
     }()
     
@@ -58,7 +60,20 @@ final class HomeCollectionViewCell: UICollectionViewCell {
     
     func setupConstraints() {
         
-//        let stackView = UIStackView(arrangedSubviews: [])
+        var constraints = [NSLayoutConstraint]()
+        
+        constraints.append(thumbImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 1.0))
+        constraints.append(thumbImageView.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 1.0))
+        
+        let stackView = UIStackView(arrangedSubviews: [thumbImageView, titleLabel, priceLabel, categoryLabel, creationDateLabel, UIView()])
+        stackView.axis = .vertical
+        stackView.distribution = .fill
+        contentView.addSubview(stackView)
+        let stackViewConstraints = stackView.anchors(leading: contentView.leadingAnchor, trailing: contentView.trailingAnchor, top: contentView.topAnchor, bottom: contentView.bottomAnchor)
+        
+        constraints.append(contentsOf: stackViewConstraints)
+        
+        NSLayoutConstraint.activate(constraints)
     }
     
     func configure(model: HomeViewModel) {
@@ -67,7 +82,5 @@ final class HomeCollectionViewCell: UICollectionViewCell {
         priceLabel.text = "5000€"
         categoryLabel.text = "Vehicule"
         creationDateLabel.text = "10 septembre 2021"
-        
-        
     }
 }
