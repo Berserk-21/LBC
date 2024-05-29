@@ -20,5 +20,6 @@ struct Constants {
         static let categoryLabelFont = UIFont.systemFont(ofSize: 14.0, weight: UIFont.Weight.medium)
         static let creationDateLabelFont = UIFont.systemFont(ofSize: 14.0, weight: UIFont.Weight.light)
         static let stackViewSpacing = 4.0
+        static let imageRatio = 1.0
     }
 }

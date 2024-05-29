@@ -79,7 +79,7 @@ final class HomeCollectionViewCell: UICollectionViewCell {
         var constraints = [NSLayoutConstraint]()
         
         constraints.append(thumbImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 1.0))
-        constraints.append(thumbImageView.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 4/3))
+        constraints.append(thumbImageView.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: Constants.HomeCollectionViewCell.imageRatio))
         
         let stackView = UIStackView(arrangedSubviews: [thumbImageView, titleLabel, priceLabel, categoryLabel, creationDateLabel, UIView()])
         stackView.axis = .vertical
