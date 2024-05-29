@@ -40,7 +40,7 @@ final class HomeCollectionViewCell: UICollectionViewCell {
     
     private var creationDateLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 140, weight: .light)
+        label.font = UIFont.systemFont(ofSize: 14.0, weight: .light)
         return label
     }()
     
