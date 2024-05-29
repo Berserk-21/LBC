@@ -101,9 +101,11 @@
 			children = (
 				2C2EE3E02C07164300BDC1FD /* AppDelegate.swift */,
 				2C2EE3E22C07164300BDC1FD /* SceneDelegate.swift */,
-				2C2EE3E42C07164300BDC1FD /* ViewController.swift */,
+				2C2EE4112C071A8900BDC1FD /* Models */,
+				2C2EE4102C071A6F00BDC1FD /* Views */,
+				2C2EE4122C071A9200BDC1FD /* ViewModels */,
 				2C2EE3E62C07164300BDC1FD /* Main.storyboard */,
-				2C2EE3E92C07164400BDC1FD /* Assets.xcassets */,
+				2C2EE4132C071AB900BDC1FD /* Ressources */,
 				2C2EE3EB2C07164400BDC1FD /* LaunchScreen.storyboard */,
 				2C2EE3EE2C07164400BDC1FD /* Info.plist */,
 			);
@@ -125,6 +127,36 @@
 				2C2EE4032C07164500BDC1FD /* LBCUITestsLaunchTests.swift */,
 			);
 			path = LBCUITests;
+			sourceTree = "<group>";
+		};
+		2C2EE4102C071A6F00BDC1FD /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2C2EE3E42C07164300BDC1FD /* ViewController.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2C2EE4112C071A8900BDC1FD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		2C2EE4122C071A9200BDC1FD /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2C2EE4132C071AB900BDC1FD /* Ressources */ = {
+			isa = PBXGroup;
+			children = (
+				2C2EE3E92C07164400BDC1FD /* Assets.xcassets */,
+			);
+			path = Ressources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
