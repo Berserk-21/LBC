@@ -9,5 +9,8 @@ import UIKit
 
 final class HomeCollectionViewCell: UICollectionViewCell {
     
+    // MARK: - Properties
+    
+    static let identifier: String = "HomeCollectionViewCell"
     
 }

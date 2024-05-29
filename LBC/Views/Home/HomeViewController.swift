@@ -30,6 +30,12 @@ final class HomeViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func loadView() {
+        super.loadView()
+        
+        setupConstraints()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -44,6 +50,14 @@ final class HomeViewController: UIViewController {
         // Make sure references are weak.
         viewModel.collectionView = collectionView
         collectionView.viewModel = viewModel
+    }
+    
+    private func setupConstraints() {
+        
+        view.addSubview(collectionView)
+        let collectionViewConstraints = collectionView.anchors(leading: view.safeAreaLayoutGuide.leadingAnchor, trailing: view.safeAreaLayoutGuide.trailingAnchor, top: view.safeAreaLayoutGuide.topAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor)
+        
+        NSLayoutConstraint.activate(collectionViewConstraints)
     }
     
 }
