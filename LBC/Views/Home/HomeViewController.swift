@@ -17,6 +17,8 @@ final class HomeViewController: UIViewController {
         return cv
     }()
     
+    private var sidePadding: CGFloat = 16.0
+    
     let viewModel: HomeViewModel
     
     // MARK: - Life Cycle
@@ -34,6 +36,7 @@ final class HomeViewController: UIViewController {
         super.loadView()
         
         setupConstraints()
+        setupLayout()
     }
     
     override func viewDidLoad() {
@@ -45,6 +48,11 @@ final class HomeViewController: UIViewController {
     
     // MARK: - Setup Views
     
+    private func setupLayout() {
+        
+        view.backgroundColor = .white
+    }
+    
     private func setupBindings() {
         
         // Make sure references are weak.
@@ -55,7 +63,7 @@ final class HomeViewController: UIViewController {
     private func setupConstraints() {
         
         view.addSubview(collectionView)
-        let collectionViewConstraints = collectionView.anchors(leading: view.safeAreaLayoutGuide.leadingAnchor, trailing: view.safeAreaLayoutGuide.trailingAnchor, top: view.safeAreaLayoutGuide.topAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor)
+        let collectionViewConstraints = collectionView.anchors(leading: view.safeAreaLayoutGuide.leadingAnchor, leadingConstant: sidePadding, trailing: view.safeAreaLayoutGuide.trailingAnchor, trailingConstant: -sidePadding, top: view.safeAreaLayoutGuide.topAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor)
         
         NSLayoutConstraint.activate(collectionViewConstraints)
     }

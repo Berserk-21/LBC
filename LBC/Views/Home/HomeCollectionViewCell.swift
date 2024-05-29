@@ -18,31 +18,38 @@ final class HomeCollectionViewCell: UICollectionViewCell {
         iv.image = UIImage(systemName: "photo")
         iv.contentMode = .scaleAspectFit
         iv.tintColor = .black
+        iv.backgroundColor = .lightGray
+        iv.layer.cornerRadius = 8.0
+        iv.layer.masksToBounds = true
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
     }()
     
     private var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16.0)
+        label.font = Constants.HomeCollectionViewCell.titleLabelFont
+        label.numberOfLines = 2
         return label
     }()
     
     private var priceLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16.0, weight: .heavy)
+        label.font = Constants.HomeCollectionViewCell.priceLabelFont
+        label.numberOfLines = 1
         return label
     }()
 
     private var categoryLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14.0, weight: .light)
+        label.font = Constants.HomeCollectionViewCell.categoryLabelFont
+        label.numberOfLines = 1
         return label
     }()
     
     private var creationDateLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14.0, weight: .light)
+        label.font = Constants.HomeCollectionViewCell.creationDateLabelFont
+        label.numberOfLines = 1
         return label
     }()
     
@@ -63,11 +70,12 @@ final class HomeCollectionViewCell: UICollectionViewCell {
         var constraints = [NSLayoutConstraint]()
         
         constraints.append(thumbImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 1.0))
-        constraints.append(thumbImageView.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 1.0))
+        constraints.append(thumbImageView.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 4/3))
         
         let stackView = UIStackView(arrangedSubviews: [thumbImageView, titleLabel, priceLabel, categoryLabel, creationDateLabel, UIView()])
         stackView.axis = .vertical
         stackView.distribution = .fill
+        stackView.spacing = Constants.HomeCollectionViewCell.stackViewSpacing
         contentView.addSubview(stackView)
         let stackViewConstraints = stackView.anchors(leading: contentView.leadingAnchor, trailing: contentView.trailingAnchor, top: contentView.topAnchor, bottom: contentView.bottomAnchor)
         
