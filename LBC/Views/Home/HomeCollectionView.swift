@@ -85,6 +85,8 @@ extension HomeCollectionView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
+        guard let model = viewModel?.products[indexPath.row] else { return .zero }
+        
         let availableWidth = collectionView.frame.width
         let numberOfColumns: Int
         
@@ -102,9 +104,34 @@ extension HomeCollectionView: UICollectionViewDelegateFlowLayout {
         
         let totalInterItemSpacing = ((numberOfColumns - 1) * Int(interItemSpacing))
         
-        let cellWidth = (availableWidth - CGFloat(totalInterItemSpacing)) / CGFloat(numberOfColumns)
+        let itemWidth = (availableWidth - CGFloat(totalInterItemSpacing)) / CGFloat(numberOfColumns)
         
-        return CGSize(width: cellWidth, height: cellWidth * 4/3)
+        let imageHeight: CGFloat = itemWidth * 4/3
+                
+        var itemHeight: CGFloat = imageHeight
+        
+        itemHeight += heightForLabel(text: model.title, font: Constants.HomeCollectionViewCell.titleLabelFont, width: itemWidth, maxLines: 2)
+        itemHeight += heightForLabel(text: "\(model.price)€", font: Constants.HomeCollectionViewCell.titleLabelFont, width: itemWidth)
+        
+        if let unwrappedCategory = model.category {
+            itemHeight += heightForLabel(text: unwrappedCategory, font: Constants.HomeCollectionViewCell.categoryLabelFont, width: itemWidth)
+        }
+        
+        itemHeight += heightForLabel(text: model.creationDate, font: Constants.HomeCollectionViewCell.creationDateLabelFont, width: itemWidth)
+        
+        return CGSize(width: itemWidth, height: itemHeight)
+    }
+    
+    /// Use this method to calculate the max height of a label.
+    private func heightForLabel(text: String, font: UIFont, width: CGFloat, maxLines: Int = 1) -> CGFloat {
+        
+        let label = UILabel()
+        label.numberOfLines = maxLines
+        label.text = "Just a long text to get the max height. Just a long text to get the max height. Just a long text to get the max height. Just a long text to get the max height. Just a long text to get the max height. Just a long text to get the max height. Just a long text to get the max height. Just a long text to get the max height."
+        label.font = font
+        let estimatedSize = label.sizeThatFits(CGSize(width: width, height: .greatestFiniteMagnitude))
+        
+        return ceil(estimatedSize.height) + Constants.HomeCollectionViewCell.stackViewSpacing
     }
 }
 
