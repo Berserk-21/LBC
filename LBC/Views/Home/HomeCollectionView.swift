@@ -23,6 +23,8 @@ final class HomeCollectionView: UICollectionView {
         self.viewModel = viewModel
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 200.0, height: 200.0)
+        layout.minimumInteritemSpacing = 0.0
+        layout.minimumLineSpacing = 0.0
         super.init(frame: .zero, collectionViewLayout: layout)
         
         setupCollectionView()
