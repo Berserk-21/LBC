@@ -133,7 +133,7 @@ final class ProductDetailViewController: UIViewController {
         
         // ScrollView
         view.addSubview(scrollView)
-        constraints.append(contentsOf: scrollView.anchors(leading: view.leadingAnchor, trailing: view.trailingAnchor, top: view.topAnchor, bottom: view.bottomAnchor))
+        constraints.append(contentsOf: scrollView.anchors(leading: view.safeAreaLayoutGuide.leadingAnchor, trailing: view.safeAreaLayoutGuide.trailingAnchor, top: view.safeAreaLayoutGuide.topAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor))
         
         // ContainerView
         scrollView.addSubview(containerView)
