@@ -60,8 +60,10 @@ class ItemViewModel: ObservableObject {
         URLSession.shared.dataTaskPublisher(for: url)
             .map{ $0.data }
             .replaceError(with: nil)
+            .subscribe(on: DispatchQueue.global(qos: .background))
             .receive(on: DispatchQueue.main)
             .assign(to: \.imageData, on: self)
             .store(in: &cancellables)
-        }
+    }
+    
 }
