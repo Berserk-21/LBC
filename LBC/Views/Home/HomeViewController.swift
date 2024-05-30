@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol HomeCollectionViewDelegate {
+    func didSelectItem(at indexPath: IndexPath)
+}
+
 final class HomeViewController: UIViewController {
     
     // MARK: - Properties
@@ -58,6 +62,7 @@ final class HomeViewController: UIViewController {
         // Make sure references are weak.
         viewModel.collectionView = collectionView
         collectionView.viewModel = viewModel
+        collectionView.productDelegate = self
         
         viewModel.start()
     }
@@ -70,5 +75,13 @@ final class HomeViewController: UIViewController {
         NSLayoutConstraint.activate(collectionViewConstraints)
     }
     
+}
+
+extension HomeViewController: ProductsCollectionViewDelegate {
+    
+    func didSelectItemAt(indexPath: IndexPath) {
+        let detailVC = ProductDetailViewController(viewModel: ItemViewModel(product: viewModel.products[indexPath.row]))
+        navigationController?.pushViewController(detailVC, animated: true)
+    }
 }
 
