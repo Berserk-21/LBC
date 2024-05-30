@@ -44,21 +44,30 @@ class ItemViewModel: ObservableObject {
         return product.isUrgent
     }
     
-    @Published var imageData: Data?
+    var description: String {
+        return product.description
+    }
+    
+    var siret: String? {
+        return product.siret != nil ? "Siret: \(product.siret)" : nil
+    }
+    
+    @Published var thumbImageData: Data?
+    @Published var smallImageData: Data?
     
     init(product: ProductModel) {
         self.product = product
     }
     
-    func loadImage() {
+    func loadThumbImage() {
         
         guard let thumbUrlString = product.imagesUrl.thumb, let url = URL(string: thumbUrlString) else {
-            imageData = nil
+            thumbImageData = nil
             return
         }
         
         if let cachedImageData = ImageCache.shared.image(forKey: thumbUrlString) {
-            self.imageData = cachedImageData
+            self.thumbImageData = cachedImageData
             return
         }
         
@@ -72,7 +81,33 @@ class ItemViewModel: ObservableObject {
             .replaceError(with: nil)
             .subscribe(on: DispatchQueue.global(qos: .background))
             .receive(on: DispatchQueue.main)
-            .assign(to: \.imageData, on: self)
+            .assign(to: \.thumbImageData, on: self)
+            .store(in: &cancellables)
+    }
+    
+    func loadSmallImage() {
+        
+        guard let smallUrlString = product.imagesUrl.small, let url = URL(string: smallUrlString) else {
+            smallImageData = nil
+            return
+        }
+        
+        if let cachedImageData = ImageCache.shared.image(forKey: smallUrlString) {
+            self.smallImageData = cachedImageData
+            return
+        }
+        
+        URLSession.shared.dataTaskPublisher(for: url)
+            .map{ $0.data }
+            .handleEvents(receiveOutput: { output in
+                if let unwrappedData = output {
+                    ImageCache.shared.setImage(unwrappedData, forKey: smallUrlString)
+                }
+            })
+            .replaceError(with: nil)
+            .subscribe(on: DispatchQueue.global(qos: .background))
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.smallImageData, on: self)
             .store(in: &cancellables)
     }
 }
