@@ -59,6 +59,7 @@ class ItemViewModel: ObservableObject {
         self.product = product
     }
     
+    /// Uses this method to fetch the thumbnail Image reactively.
     func loadThumbImage() {
         
         guard let thumbUrlString = product.imagesUrl.thumb, let url = URL(string: thumbUrlString) else {
