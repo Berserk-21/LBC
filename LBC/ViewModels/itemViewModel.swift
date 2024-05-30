@@ -49,7 +49,10 @@ class ItemViewModel: ObservableObject {
     }
     
     var siret: String? {
-        return product.siret != nil ? "Siret: \(product.siret)" : nil
+        if let siret = product.siret {
+            return "Siret: \(String(describing: siret))"
+        }
+        return nil
     }
     
     @Published var thumbImageData: Data?
