@@ -11,11 +11,16 @@ protocol HomeCollectionViewInterface: AnyObject {
     func updateData()
 }
 
+protocol ProductsCollectionViewDelegate: AnyObject {
+    func didSelectItemAt(indexPath: IndexPath)
+}
+
 final class HomeCollectionView: UICollectionView {
     
     // MARK: - Properties
     
     weak var viewModel: HomeViewModel?
+    weak var productDelegate: ProductsCollectionViewDelegate?
     
     private var interItemSpacing = 16.0
     
@@ -76,6 +81,13 @@ extension HomeCollectionView: UICollectionViewDataSource {
         }
         
         return cell
+    }
+}
+
+extension HomeCollectionView: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        productDelegate?.didSelectItemAt(indexPath: indexPath)
     }
 }
 

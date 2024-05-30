@@ -44,12 +44,27 @@ class ItemViewModel: ObservableObject {
         return product.isUrgent
     }
     
+    var description: String {
+        return product.description
+    }
+    
+    var siret: String? {
+        if let siret = product.siret {
+            return "Siret: \(String(describing: siret))"
+        }
+        return nil
+    }
+    
     @Published var imageData: Data?
+    
+    // Not using it because the quality is surprisingly worst than the thumbnail.
+//    @Published var smallImageData: Data?
     
     init(product: ProductModel) {
         self.product = product
     }
     
+    /// Uses this method to fetch the thumbnail Image reactively.
     func loadImage() {
         
         guard let thumbUrlString = product.imagesUrl.thumb, let url = URL(string: thumbUrlString) else {
