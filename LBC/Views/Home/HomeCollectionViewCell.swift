@@ -130,9 +130,9 @@ final class HomeCollectionViewCell: UICollectionViewCell {
         viewModel = ItemViewModel(product: model)
         
         titleLabel.text = model.title
-        priceLabel.text = "\(model.price)€"
+        priceLabel.text = viewModel?.formattedPrice
         categoryLabel.text = model.category
-        creationDateLabel.text = model.creationDate
+        creationDateLabel.text = viewModel?.formattedDate
         isUrgentBackgroundView.isHidden = !model.isUrgent
         
         viewModel?.$imageData.sink(receiveValue: { [weak self] data in

@@ -15,6 +15,24 @@ class ItemViewModel: ObservableObject {
     
     let product: ProductModel
     
+    var formattedPrice: String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencyCode = Locale.current.currencyCode ?? "EUR"
+        return formatter.string(from: NSNumber(floatLiteral: product.price)) ?? "---"
+    }
+    
+    var formattedDate: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        guard let date = dateFormatter.date(from: product.creationDate) else {
+            return product.creationDate
+        }
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .none
+        return dateFormatter.string(from: date)
+    }
+    
     init(product: ProductModel) {
         self.product = product
     }
