@@ -26,7 +26,6 @@ class MockNetworkService: NetworkServiceInterface {
         let products = productsPublisher
             .decode(type: [ProductModel].self, decoder: JSONDecoder())
             .mapError { error -> NetworkServiceError in
-                print(error)
                 return NetworkServiceError.decodingFailed(error)
             }
             .eraseToAnyPublisher()

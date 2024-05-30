@@ -63,7 +63,6 @@ struct NetworkService: NetworkServiceInterface {
         let products = fetch(for: Constants.NetworkService.productsUrl)
             .decode(type: [ProductModel].self, decoder: JSONDecoder())
             .mapError { error -> NetworkServiceError in
-                print(error)
                 return NetworkServiceError.decodingFailed(error)
             }
             .eraseToAnyPublisher()
