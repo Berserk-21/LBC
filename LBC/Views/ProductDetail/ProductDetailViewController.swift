@@ -109,11 +109,16 @@ final class ProductDetailViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func loadView() {
+        super.loadView()
         
         setupConstraints()
         setupLayout()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
     }
     
     // MARK: - Setup Views
