@@ -17,9 +17,13 @@ enum NetworkServiceError: Error {
     case decodingFailed(_: Error)
 }
 
-struct NetworkService {
+protocol NetworkServiceInterface {
+    func fetchData() -> AnyPublisher<[ProductModel], NetworkServiceError>
+}
+
+struct NetworkService: NetworkServiceInterface {
     
-    func fetchData(for urlString: String) -> AnyPublisher<Data, NetworkServiceError> {
+    func fetch(for urlString: String) -> AnyPublisher<Data, NetworkServiceError> {
         
         guard let url = URL(string: urlString) else {
             return Fail(error: NetworkServiceError.invalidUrl).eraseToAnyPublisher()
@@ -43,6 +47,39 @@ struct NetworkService {
                 } else {
                     return NetworkServiceError.requestFailed(error)
                 }
+            }
+            .eraseToAnyPublisher()
+    }
+    
+    func fetchData() -> AnyPublisher<[ProductModel], NetworkServiceError> {
+        
+        let categories = fetch(for: Constants.NetworkService.categoriesUrl)
+            .decode(type: [CategoryModel].self, decoder: JSONDecoder())
+            .mapError { error -> NetworkServiceError in
+                return NetworkServiceError.decodingFailed(error)
+            }
+            .eraseToAnyPublisher()
+        
+        let products = fetch(for: Constants.NetworkService.productsUrl)
+            .decode(type: [ProductModel].self, decoder: JSONDecoder())
+            .mapError { error -> NetworkServiceError in
+                print(error)
+                return NetworkServiceError.decodingFailed(error)
+            }
+            .eraseToAnyPublisher()
+        
+        return Publishers.Zip(categories, products)
+            .map { categories, products -> [ProductModel] in
+                
+                let categoriesDict = Dictionary(uniqueKeysWithValues: categories.map({ ($0.id, $0.name) }))
+
+                let completedProducts = products.map { product in
+                    var completedProduct = product
+                    completedProduct.category = categoriesDict[product.categoryId]
+                    return completedProduct
+                }
+                
+                return completedProducts
             }
             .eraseToAnyPublisher()
     }
