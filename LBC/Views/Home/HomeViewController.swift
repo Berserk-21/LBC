@@ -58,6 +58,8 @@ final class HomeViewController: UIViewController {
         // Make sure references are weak.
         viewModel.collectionView = collectionView
         collectionView.viewModel = viewModel
+        
+        viewModel.start()
     }
     
     private func setupConstraints() {
