@@ -71,8 +71,8 @@ extension HomeCollectionView: UICollectionViewDataSource {
             fatalError("Make sure this does not happen")
         }
         
-        if let model = viewModel?.products[indexPath.row] {
-            cell.configure(model: model)
+        if let productModel = viewModel?.products[indexPath.row] {
+            cell.configure(viewModel: ItemViewModel(product: productModel))
         }
         
         return cell
