@@ -133,7 +133,7 @@ final class HomeCollectionViewCell: UICollectionViewCell {
         creationDateLabel.text = viewModel.formattedDate
         isUrgentBackgroundView.isHidden = !viewModel.isUrgent
         
-        viewModel.$thumbImageData.sink(receiveValue: { [weak self] data in
+        viewModel.$imageData.sink(receiveValue: { [weak self] data in
             
             if let imageData = data, let image = UIImage(data: imageData) {
                 self?.thumbImageView.image = image
@@ -141,6 +141,6 @@ final class HomeCollectionViewCell: UICollectionViewCell {
         })
         .store(in: &cancellables)
         
-        viewModel.loadThumbImage()
+        viewModel.loadImage()
     }
 }

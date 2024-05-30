@@ -55,23 +55,25 @@ class ItemViewModel: ObservableObject {
         return nil
     }
     
-    @Published var thumbImageData: Data?
-    @Published var smallImageData: Data?
+    @Published var imageData: Data?
+    
+    // Not using it because the quality is surprisingly worst than the thumbnail.
+//    @Published var smallImageData: Data?
     
     init(product: ProductModel) {
         self.product = product
     }
     
     /// Uses this method to fetch the thumbnail Image reactively.
-    func loadThumbImage() {
+    func loadImage() {
         
         guard let thumbUrlString = product.imagesUrl.thumb, let url = URL(string: thumbUrlString) else {
-            thumbImageData = nil
+            imageData = nil
             return
         }
         
         if let cachedImageData = ImageCache.shared.image(forKey: thumbUrlString) {
-            self.thumbImageData = cachedImageData
+            self.imageData = cachedImageData
             return
         }
         
@@ -85,33 +87,7 @@ class ItemViewModel: ObservableObject {
             .replaceError(with: nil)
             .subscribe(on: DispatchQueue.global(qos: .background))
             .receive(on: DispatchQueue.main)
-            .assign(to: \.thumbImageData, on: self)
-            .store(in: &cancellables)
-    }
-    
-    func loadSmallImage() {
-        
-        guard let smallUrlString = product.imagesUrl.small, let url = URL(string: smallUrlString) else {
-            smallImageData = nil
-            return
-        }
-        
-        if let cachedImageData = ImageCache.shared.image(forKey: smallUrlString) {
-            self.smallImageData = cachedImageData
-            return
-        }
-        
-        URLSession.shared.dataTaskPublisher(for: url)
-            .map{ $0.data }
-            .handleEvents(receiveOutput: { output in
-                if let unwrappedData = output {
-                    ImageCache.shared.setImage(unwrappedData, forKey: smallUrlString)
-                }
-            })
-            .replaceError(with: nil)
-            .subscribe(on: DispatchQueue.global(qos: .background))
-            .receive(on: DispatchQueue.main)
-            .assign(to: \.smallImageData, on: self)
+            .assign(to: \.imageData, on: self)
             .store(in: &cancellables)
     }
 }

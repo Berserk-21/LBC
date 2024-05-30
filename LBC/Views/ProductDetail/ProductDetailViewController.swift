@@ -29,7 +29,7 @@ final class ProductDetailViewController: UIViewController {
         return sv
     }()
     
-    private let smallImageView: UIImageView = {
+    private let productImageView: UIImageView = {
         let iv = UIImageView()
         iv.image = UIImage(named: "leboncoin_placeholder")
         iv.contentMode = .scaleAspectFill
@@ -88,23 +88,15 @@ final class ProductDetailViewController: UIViewController {
         return v
     }()
     
-    
-    private lazy var isUrgentBackgroundView: UIView = {
-        let v = UIView()
-        v.layer.cornerRadius = isUrgentBackgroundViewWidth / 2
-        v.layer.masksToBounds = true
-        v.backgroundColor = .darkGray
-        return v
-    }()
-    
     private let siretLabel: UILabel = {
         let label = UILabel()
         label.font = Constants.HomeCollectionViewCell.siretLabelFont
         return label
     }()
     
-    private var isUrgentBackgroundViewWidth: CGFloat = 30.0
     private var sidePadding: CGFloat = 16.0
+    private var imageViewWidthMultiplier: CGFloat = 0.5
+    private var stackViewSpacing: CGFloat = 8.0
     
     // MARK: - Life Cycle
     
@@ -141,34 +133,35 @@ final class ProductDetailViewController: UIViewController {
         constraints.append(containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor))
         
         // SmallImageView
-        containerView.addSubview(smallImageView)
-        constraints.append(contentsOf: smallImageView.anchors(leading: containerView.leadingAnchor, leadingConstant: sidePadding, trailing: nil, top: containerView.topAnchor, bottom: nil))
-        constraints.append(smallImageView.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 0.5))
-        constraints.append(smallImageView.heightAnchor.constraint(equalTo: smallImageView.widthAnchor, multiplier: 1.0))
+        containerView.addSubview(productImageView)
+        constraints.append(contentsOf: productImageView.anchors(leading: containerView.leadingAnchor, leadingConstant: sidePadding, trailing: nil, top: containerView.topAnchor, bottom: nil))
+        constraints.append(productImageView.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: imageViewWidthMultiplier))
+        constraints.append(productImageView.heightAnchor.constraint(equalTo: productImageView.widthAnchor, multiplier: 1.0))
         
-        // TopRightStackView
+        // TopRight StackView
         let topRightStackView = UIStackView(arrangedSubviews: [titleLabel, priceLabel, categoryLabel, UIView()])
         topRightStackView.axis = .vertical
         topRightStackView.spacing = 8.0
         
         containerView.addSubview(topRightStackView)
-        constraints.append(contentsOf: topRightStackView.anchors(leading: smallImageView.trailingAnchor, leadingConstant: sidePadding, trailing: containerView.trailingAnchor, trailingConstant: -sidePadding, top: containerView.topAnchor, topConstant: sidePadding, bottom: smallImageView.bottomAnchor, bottomConstant: -sidePadding))
+        constraints.append(contentsOf: topRightStackView.anchors(leading: productImageView.trailingAnchor, leadingConstant: sidePadding, trailing: containerView.trailingAnchor, trailingConstant: -sidePadding, top: containerView.topAnchor, topConstant: sidePadding, bottom: productImageView.bottomAnchor, bottomConstant: -sidePadding))
         
         // Vertical Separator
         constraints.append(verticalSeparator.widthAnchor.constraint(equalToConstant: 1.0))
         
-        // Date & urgency StackView
+        // Bottom StackView
         let dateUrgencyStackView = UIStackView(arrangedSubviews: [creationDateLabel, verticalSeparator, isUrgentLabel, UIView()])
         dateUrgencyStackView.axis = .horizontal
-        dateUrgencyStackView.spacing = 16.0
+        dateUrgencyStackView.spacing = stackViewSpacing
         
         let bottomStackView = UIStackView(arrangedSubviews: [descriptionLabel, dateUrgencyStackView, siretLabel])
         bottomStackView.axis = .vertical
-        bottomStackView.spacing = 8.0
+        bottomStackView.spacing = stackViewSpacing
         containerView.addSubview(bottomStackView)
         
-        constraints.append(contentsOf: bottomStackView.anchors(leading: containerView.leadingAnchor, leadingConstant: sidePadding, trailing: containerView.trailingAnchor, trailingConstant: -sidePadding, top: smallImageView.bottomAnchor, topConstant: sidePadding, bottom: containerView.bottomAnchor, bottomConstant: -sidePadding))
+        constraints.append(contentsOf: bottomStackView.anchors(leading: containerView.leadingAnchor, leadingConstant: sidePadding, trailing: containerView.trailingAnchor, trailingConstant: -sidePadding, top: productImageView.bottomAnchor, topConstant: sidePadding, bottom: containerView.bottomAnchor, bottomConstant: -sidePadding))
         
+        // Activate constraints
         NSLayoutConstraint.activate(constraints)
     }
     
@@ -185,21 +178,20 @@ final class ProductDetailViewController: UIViewController {
         
         isUrgentLabel.text = viewModel.isUrgent ? "URGENT" : nil
         isUrgentLabel.isHidden = !viewModel.isUrgent
-        
-        verticalSeparator.isHidden = !viewModel.isUrgent
+        verticalSeparator.isHidden = isUrgentLabel.isHidden
         
         siretLabel.text = viewModel.siret
         siretLabel.isHidden = viewModel.siret == nil
         
-        viewModel.$thumbImageData
+        viewModel.$imageData
             .sink { [weak self] data in
                 if let imageData = data, let image = UIImage(data: imageData) {
-                    self?.smallImageView.image = image
+                    self?.productImageView.image = image
                 }
             }
             .store(in: &cancellables)
         
-        viewModel.loadThumbImage()
+        viewModel.loadImage()
     }
     
 }
