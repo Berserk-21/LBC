@@ -125,17 +125,15 @@ final class HomeCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
-    func configure(model: ProductModel) {
+    func configure(viewModel: ItemViewModel) {
+                        
+        titleLabel.text = viewModel.title
+        priceLabel.text = viewModel.formattedPrice
+        categoryLabel.text = viewModel.category
+        creationDateLabel.text = viewModel.formattedDate
+        isUrgentBackgroundView.isHidden = !viewModel.isUrgent
         
-        viewModel = ItemViewModel(product: model)
-        
-        titleLabel.text = model.title
-        priceLabel.text = viewModel?.formattedPrice
-        categoryLabel.text = model.category
-        creationDateLabel.text = viewModel?.formattedDate
-        isUrgentBackgroundView.isHidden = !model.isUrgent
-        
-        viewModel?.$imageData.sink(receiveValue: { [weak self] data in
+        viewModel.$imageData.sink(receiveValue: { [weak self] data in
             
             if let imageData = data, let image = UIImage(data: imageData) {
                 self?.thumbImageView.image = image
@@ -143,6 +141,6 @@ final class HomeCollectionViewCell: UICollectionViewCell {
         })
         .store(in: &cancellables)
         
-        viewModel?.loadImage()
+        viewModel.loadImage()
     }
 }

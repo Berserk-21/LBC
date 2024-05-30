@@ -10,7 +10,6 @@ import Combine
 
 class ItemViewModel: ObservableObject {
     
-    @Published var imageData: Data?
     private var cancellables = Set<AnyCancellable>()
     
     let product: ProductModel
@@ -32,6 +31,20 @@ class ItemViewModel: ObservableObject {
         dateFormatter.timeStyle = .none
         return dateFormatter.string(from: date)
     }
+    
+    var title: String {
+        return product.title
+    }
+    
+    var category: String? {
+        return product.category
+    }
+    
+    var isUrgent: Bool {
+        return product.isUrgent
+    }
+    
+    @Published var imageData: Data?
     
     init(product: ProductModel) {
         self.product = product
