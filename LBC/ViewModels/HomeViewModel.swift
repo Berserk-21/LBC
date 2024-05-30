@@ -27,7 +27,12 @@ final class HomeViewModel {
     
     // MARK: - Business Logic
     
-    func fetchData() {
+    func start() {
+        
+        fetchData()
+    }
+    
+    private func fetchData() {
         
         networkService.fetchData()
             .sink { [weak self] result in
