@@ -56,6 +56,26 @@ final class HomeCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
+    private var isUrgentImageView: UIImageView = {
+        let iv = UIImageView()
+        iv.image = UIImage(systemName: "bolt.badge.clock.fill")
+        iv.tintColor = .yellow
+        iv.translatesAutoresizingMaskIntoConstraints = false
+        return iv
+    }()
+    
+    private lazy var isUrgentBackgroundView: UIView = {
+        let v = UIView()
+        v.layer.cornerRadius = isUrgentBackgroundViewWidth / 2
+        v.layer.masksToBounds = true
+        v.backgroundColor = .darkGray
+        return v
+    }()
+    
+    private var isUrgentPadding: CGFloat = 8.0
+    private var isUrgentImageViewWidth: CGFloat = 20.0
+    private var isUrgentBackgroundViewWidth: CGFloat = 30.0
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -74,7 +94,7 @@ final class HomeCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Setup Views
     
-    func setupConstraints() {
+    private func setupConstraints() {
         
         var constraints = [NSLayoutConstraint]()
         
@@ -90,6 +110,18 @@ final class HomeCollectionViewCell: UICollectionViewCell {
         
         constraints.append(contentsOf: stackViewConstraints)
         
+        contentView.addSubview(isUrgentBackgroundView)
+        constraints.append(contentsOf: isUrgentBackgroundView.anchors(leading: nil, trailing: thumbImageView.trailingAnchor, trailingConstant: -isUrgentPadding, top: nil, bottom: thumbImageView.bottomAnchor, bottomConstant: -isUrgentPadding))
+        constraints.append(isUrgentBackgroundView.widthAnchor.constraint(equalToConstant: isUrgentBackgroundViewWidth))
+        constraints.append(isUrgentBackgroundView.heightAnchor.constraint(equalToConstant: isUrgentBackgroundViewWidth))
+        
+        isUrgentBackgroundView.addSubview(isUrgentImageView)
+        constraints.append(isUrgentImageView.centerXAnchor.constraint(equalTo: isUrgentBackgroundView.centerXAnchor, constant: -2.0))
+        constraints.append(isUrgentImageView.centerYAnchor.constraint(equalTo: isUrgentBackgroundView.centerYAnchor, constant: 0.0))
+        
+        constraints.append(isUrgentImageView.widthAnchor.constraint(equalToConstant: isUrgentImageViewWidth))
+        constraints.append(isUrgentImageView.heightAnchor.constraint(equalToConstant: isUrgentImageViewWidth))
+        
         NSLayoutConstraint.activate(constraints)
     }
     
@@ -101,6 +133,7 @@ final class HomeCollectionViewCell: UICollectionViewCell {
         priceLabel.text = "\(model.price)€"
         categoryLabel.text = model.category
         creationDateLabel.text = model.creationDate
+        isUrgentBackgroundView.isHidden = !model.isUrgent
         
         viewModel?.$imageData.sink(receiveValue: { [weak self] data in
             
