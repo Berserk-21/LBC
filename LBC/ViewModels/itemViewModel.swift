@@ -57,11 +57,22 @@ class ItemViewModel: ObservableObject {
             return
         }
         
+        if let cachedImageData = ImageCache.shared.image(forKey: thumbUrlString) {
+            self.imageData = cachedImageData
+            return
+        }
+        
         URLSession.shared.dataTaskPublisher(for: url)
             .map{ $0.data }
+            .handleEvents(receiveOutput: { output in
+                if let unwrappedData = output {
+                    ImageCache.shared.setImage(unwrappedData, forKey: thumbUrlString)
+                }
+            })
             .replaceError(with: nil)
+            .subscribe(on: DispatchQueue.global(qos: .background))
             .receive(on: DispatchQueue.main)
             .assign(to: \.imageData, on: self)
             .store(in: &cancellables)
-        }
+    }
 }
