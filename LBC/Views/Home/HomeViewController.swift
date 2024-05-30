@@ -16,8 +16,8 @@ final class HomeViewController: UIViewController {
     // MARK: - Properties
     
     lazy var collectionView: HomeCollectionView = {
-        let cv = HomeCollectionView()
-        cv.viewModel = viewModel
+        let cv = HomeCollectionView(viewModel: viewModel)
+        cv.productDelegate = self
         return cv
     }()
     
@@ -48,6 +48,7 @@ final class HomeViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         setupBindings()
+        start()
     }
     
     // MARK: - Setup Views
@@ -57,16 +58,20 @@ final class HomeViewController: UIViewController {
         view.backgroundColor = .white
     }
     
+    /// Binds viewModel and Views.
     private func setupBindings() {
         
         // Make sure references are weak.
         viewModel.collectionView = collectionView
         collectionView.viewModel = viewModel
-        collectionView.productDelegate = self
+    }
+    
+    private func start() {
         
         viewModel.start()
     }
     
+    /// Adds views, creates and activates constraints.
     private func setupConstraints() {
         
         view.addSubview(collectionView)
@@ -74,12 +79,16 @@ final class HomeViewController: UIViewController {
         
         NSLayoutConstraint.activate(collectionViewConstraints)
     }
-    
 }
+
+// MARK: - ProductsCollectionViewDelegate
 
 extension HomeViewController: ProductsCollectionViewDelegate {
     
     func didSelectItemAt(indexPath: IndexPath) {
+        
+        guard indexPath.row < viewModel.products.count else { return }
+        
         let detailVC = ProductDetailViewController(viewModel: ItemViewModel(product: viewModel.products[indexPath.row]))
         navigationController?.pushViewController(detailVC, animated: true)
     }
