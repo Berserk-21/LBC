@@ -21,7 +21,7 @@ class URLProtocolMock: URLProtocol {
     }
     
     override func startLoading() {
-        if let url = request.url, let handler = URLProtocolMock.loadingHandler {
+        if let handler = URLProtocolMock.loadingHandler {
             let (response, data) = handler(request)
             client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
             client?.urlProtocol(self, didLoad: data)
