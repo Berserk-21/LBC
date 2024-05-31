@@ -18,7 +18,7 @@ final class ProductsCollectionViewCell: UICollectionViewCell {
     
     private var cancellables = Set<AnyCancellable>()
     
-    private var thumbImageView: UIImageView = {
+    private let thumbImageView: UIImageView = {
         let iv = UIImageView()
         iv.image = UIImage(named: "leboncoin_placeholder")
         iv.contentMode = .scaleAspectFill
@@ -28,35 +28,35 @@ final class ProductsCollectionViewCell: UICollectionViewCell {
         return iv
     }()
     
-    private var titleLabel: UILabel = {
+    private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = ProductsCollectionViewCell.titleLabelFont
         label.numberOfLines = 2
         return label
     }()
     
-    private var priceLabel: UILabel = {
+    private let priceLabel: UILabel = {
         let label = UILabel()
         label.font = ProductsCollectionViewCell.priceLabelFont
         label.numberOfLines = 1
         return label
     }()
 
-    private var categoryLabel: UILabel = {
+    private let categoryLabel: UILabel = {
         let label = UILabel()
         label.font = ProductsCollectionViewCell.categoryLabelFont
         label.numberOfLines = 1
         return label
     }()
     
-    private var creationDateLabel: UILabel = {
+    private let creationDateLabel: UILabel = {
         let label = UILabel()
         label.font = ProductsCollectionViewCell.creationDateLabelFont
         label.numberOfLines = 1
         return label
     }()
     
-    private var isUrgentImageView: UIImageView = {
+    private let isUrgentImageView: UIImageView = {
         let iv = UIImageView()
         iv.image = UIImage(systemName: "bolt.badge.clock.fill")
         iv.tintColor = .yellow

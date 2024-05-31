@@ -106,19 +106,19 @@ final class ProductDetailViewController: UIViewController {
         return button
     }()
     
-    private var comingSoonLabel: UILabel = {
+    private let comingSoonLabel: UILabel = {
         let label = UILabel()
         label.text = Constants.ProductDetailViewController.comingSoon
         label.font = UIFont.systemFont(ofSize: 12.0, weight: .light)
         return label
     }()
     
-    private var sidePadding: CGFloat = 16.0
-    private var imageViewWidthMultiplier: CGFloat = 0.5
-    private var stackViewSpacing: CGFloat = 8.0
+    private let sidePadding: CGFloat = 16.0
+    private let imageViewWidthMultiplier: CGFloat = 0.5
+    private let stackViewSpacing: CGFloat = 8.0
     
-    private var buttonWidth: CGFloat = 120.0
-    private var buttonHeight: CGFloat = 40.0
+    private let buttonWidth: CGFloat = 120.0
+    private let buttonHeight: CGFloat = 40.0
     
     // MARK: - Life Cycle
     
