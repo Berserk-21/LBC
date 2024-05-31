@@ -20,6 +20,10 @@ struct Constants {
     }
     
     struct ProductViewController {
+        
+        struct Navigation {
+            static let title = "Leboncoin"
+        }
         struct Alert {
             static let errorTitle = "Impossible de charger les produits"
             static let errorMessage = "Vérifiez votre connexion et réessayez !"

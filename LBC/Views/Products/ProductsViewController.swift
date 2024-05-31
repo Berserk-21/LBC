@@ -56,6 +56,8 @@ final class ProductsViewController: UIViewController {
     private func setupLayout() {
         
         view.backgroundColor = .white
+        navigationItem.title = Constants.ProductViewController.Navigation.title
+        navigationController?.navigationBar.tintColor = .black
     }
     
     /// Binds viewModel and Views.
