@@ -1,5 +1,5 @@
 //
-//  HomeCollectionViewCell.swift
+//  ProductsCollectionViewCell.swift
 //  LBC
 //
 //  Created by Berserk on 29/05/2024.
@@ -8,13 +8,13 @@
 import UIKit
 import Combine
 
-final class HomeCollectionViewCell: UICollectionViewCell {
+final class ProductsCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     
     static let identifier: String = "HomeCollectionViewCell"
     
-    private var viewModel: ItemViewModel?
+    private var viewModel: ProductDetailViewModel?
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -125,7 +125,7 @@ final class HomeCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
-    func configure(viewModel: ItemViewModel) {
+    func configure(viewModel: ProductDetailViewModel) {
                         
         titleLabel.text = viewModel.title
         priceLabel.text = viewModel.formattedPrice

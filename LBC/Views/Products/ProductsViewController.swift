@@ -1,5 +1,5 @@
 //
-//  HomeViewController.swift
+//  ProductsViewController.swift
 //  LBC
 //
 //  Created by Berserk on 29/05/2024.
@@ -7,28 +7,24 @@
 
 import UIKit
 
-protocol HomeCollectionViewDelegate {
-    func didSelectItem(at indexPath: IndexPath)
-}
-
-final class HomeViewController: UIViewController {
+final class ProductsViewController: UIViewController {
     
     // MARK: - Properties
     
-    lazy var collectionView: HomeCollectionView = {
-        let cv = HomeCollectionView(viewModel: viewModel)
+    lazy var collectionView: ProductsCollectionView = {
+        let cv = ProductsCollectionView(viewModel: viewModel)
         cv.productDelegate = self
         return cv
     }()
+        
+    private let viewModel: ProductsViewModel
     
     private var sidePadding: CGFloat = 16.0
-    
-    let viewModel: HomeViewModel
     
     // MARK: - Life Cycle
     
     init() {
-        self.viewModel = HomeViewModel()
+        self.viewModel = ProductsViewModel()
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -83,13 +79,13 @@ final class HomeViewController: UIViewController {
 
 // MARK: - ProductsCollectionViewDelegate
 
-extension HomeViewController: ProductsCollectionViewDelegate {
+extension ProductsViewController: ProductsCollectionViewDelegate {
     
     func didSelectItemAt(indexPath: IndexPath) {
         
         guard indexPath.row < viewModel.products.count else { return }
         
-        let detailVC = ProductDetailViewController(viewModel: ItemViewModel(product: viewModel.products[indexPath.row]))
+        let detailVC = ProductDetailViewController(viewModel: ProductDetailViewModel(product: viewModel.products[indexPath.row]))
         navigationController?.pushViewController(detailVC, animated: true)
     }
 }

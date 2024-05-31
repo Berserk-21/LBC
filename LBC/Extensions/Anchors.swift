@@ -9,6 +9,7 @@ import UIKit
 
 extension UIView {
     
+     /// Use this method to create and get constraints for a specific view. Does not activate constraints.
     func anchors(leading: NSLayoutXAxisAnchor?, leadingConstant: CGFloat = 0.0, trailing: NSLayoutXAxisAnchor?, trailingConstant: CGFloat = 0.0, top: NSLayoutYAxisAnchor?, topConstant: CGFloat = 0.0, bottom: NSLayoutYAxisAnchor?, bottomConstant: CGFloat = 0.0) -> [NSLayoutConstraint] {
         
         translatesAutoresizingMaskIntoConstraints = false

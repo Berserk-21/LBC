@@ -23,6 +23,11 @@ protocol NetworkServiceInterface {
 
 struct NetworkService: NetworkServiceInterface {
     
+    /**
+     Use this method to fetch data from an url.
+     - parameter urlString: the url of type String, used in the request.
+     - Returns a Publisher that we can subscribe to, to receive the result.
+     */
     func fetch(for urlString: String) -> AnyPublisher<Data, NetworkServiceError> {
         
         guard let url = URL(string: urlString) else {
@@ -51,6 +56,10 @@ struct NetworkService: NetworkServiceInterface {
             .eraseToAnyPublisher()
     }
     
+    /**
+     Use this method to fetch products datas completed with their corresponding categories.
+     - Returns a Publisher that we can subscribe to, to receive the result.
+     */
     func fetchData() -> AnyPublisher<[ProductModel], NetworkServiceError> {
         
         let categories = fetch(for: Constants.NetworkService.categoriesUrl)
