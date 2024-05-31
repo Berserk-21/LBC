@@ -26,4 +26,11 @@ struct Constants {
         static let imageRatio = 1.0
         static let invalidPriceText = "Prix inconnu"
     }
+    
+    struct ProductViewController {
+        struct Alert {
+            static let errorTitle = "Impossible de charger les produits"
+            static let errorMessage = "Vérifiez votre connexion et réessayez !"
+        }
+    }
 }

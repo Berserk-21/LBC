@@ -18,6 +18,7 @@ final class ProductsViewModel {
     @Published var products = [ProductModel]()
     
     weak var collectionView: ProductCollectionViewInterface?
+    weak var productsViewControllerDelegate: ProductsViewControllerInterface?
     
     // MARK: - Life Cycle
     
@@ -41,7 +42,9 @@ final class ProductsViewModel {
                 case .finished:
                     break
                 case .failure(let error):
-                    self?.presentAlert(error)
+                    DispatchQueue.main.async {
+                        self?.presentAlert(error)
+                    }
                 }
             } receiveValue: { [weak self] products in
                 
@@ -56,6 +59,7 @@ final class ProductsViewModel {
     // Could create a protocol to communicate with the viewController and present errors.
     private func presentAlert(_ error: NetworkServiceError) {
         
+        productsViewControllerDelegate?.presentAlert(with: error)
     }
     
     private func updateData() {

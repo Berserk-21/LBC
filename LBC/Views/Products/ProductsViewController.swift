@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol ProductsViewControllerInterface: AnyObject {
+    func presentAlert(with error: NetworkServiceError)
+}
+
 final class ProductsViewController: UIViewController {
     
     // MARK: - Properties
@@ -60,6 +64,7 @@ final class ProductsViewController: UIViewController {
         // Make sure references are weak.
         viewModel.collectionView = collectionView
         collectionView.viewModel = viewModel
+        viewModel.productsViewControllerDelegate = self
     }
     
     private func start() {
@@ -90,3 +95,14 @@ extension ProductsViewController: ProductsCollectionViewDelegate {
     }
 }
 
+// MARK: - ProductsViewControllerInterface
+
+extension ProductsViewController: ProductsViewControllerInterface {
+    
+    func presentAlert(with error: NetworkServiceError) {
+        
+        let alertController = UIAlertController(title: Constants.ProductViewController.Alert.errorTitle, message: Constants.ProductViewController.Alert.errorMessage, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alertController, animated: true)
+    }
+}
