@@ -11,7 +11,7 @@ import Combine
 
 final class ItemViewModelTests: XCTestCase {
     
-    var itemViewModels: [ItemViewModel]!
+    var itemViewModels: [ProductDetailViewModel]!
     var cancellables = Set<AnyCancellable>()
 
     override func setUpWithError() throws {
@@ -23,7 +23,7 @@ final class ItemViewModelTests: XCTestCase {
         let config = URLSessionConfiguration.ephemeral
         config.protocolClasses = [URLProtocolMock.self]
         let session = URLSession(configuration: config)
-        itemViewModels = [ItemViewModel(product: products[0], urlSession: session), ItemViewModel(product: products[1])]
+        itemViewModels = [ProductDetailViewModel(product: products[0], urlSession: session), ProductDetailViewModel(product: products[1])]
     }
 
     override func tearDownWithError() throws {

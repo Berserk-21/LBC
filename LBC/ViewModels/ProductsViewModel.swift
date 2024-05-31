@@ -1,5 +1,5 @@
 //
-//  HomeViewModel.swift
+//  ProductsViewModel.swift
 //  LBC
 //
 //  Created by Berserk on 29/05/2024.
@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-final class HomeViewModel {
+final class ProductsViewModel {
     
     // MARK: - Properties
     
@@ -17,7 +17,7 @@ final class HomeViewModel {
     
     @Published var products = [ProductModel]()
     
-    weak var collectionView: HomeCollectionViewInterface?
+    weak var collectionView: ProductCollectionViewInterface?
     
     // MARK: - Life Cycle
     
@@ -32,6 +32,7 @@ final class HomeViewModel {
         fetchData()
     }
     
+    /// Use this method to fetch data and present the result in views.
     private func fetchData() {
         
         networkService.fetchData()
@@ -52,6 +53,7 @@ final class HomeViewModel {
             .store(in: &cancellables)
     }
     
+    // Could create a protocol to communicate with the viewController and present errors.
     private func presentAlert(_ error: NetworkServiceError) {
         
     }

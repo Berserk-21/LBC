@@ -1,5 +1,5 @@
 //
-//  itemViewModel.swift
+//  ProductDetailViewModel.swift
 //  LBC
 //
 //  Created by Berserk on 29/05/2024.
@@ -8,11 +8,13 @@
 import Foundation
 import Combine
 
-class ItemViewModel {
+class ProductDetailViewModel {
+    
+    // MARK: - Properties
     
     private var cancellables = Set<AnyCancellable>()
     
-    let product: ProductModel
+    private let product: ProductModel
     private let urlSession: URLSession
     
     var formattedPrice: String {
@@ -68,10 +70,14 @@ class ItemViewModel {
     // Not using it because the quality is surprisingly worst than the thumbnail.
 //    @Published var smallImageData: Data?
     
+    // MARK: - Life Cycle
+    
     init(product: ProductModel, urlSession: URLSession = URLSession.shared) {
         self.product = product
         self.urlSession = urlSession
     }
+    
+    // MARK: - Fetch Data
     
     /// Uses this method to fetch the thumbnail Image reactively.
     func loadImage() {

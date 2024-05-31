@@ -11,7 +11,7 @@ import Combine
 
 final class LBCTests: XCTestCase {
     
-    var viewModel: HomeViewModel!
+    var viewModel: ProductsViewModel!
     var mockNetworkService: MockNetworkService!
     var cancellables = Set<AnyCancellable>()
 
@@ -19,7 +19,7 @@ final class LBCTests: XCTestCase {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         
         mockNetworkService = MockNetworkService()
-        viewModel = HomeViewModel(networkService: mockNetworkService)
+        viewModel = ProductsViewModel(networkService: mockNetworkService)
         
         let categoriesData = loadMock(name: "categories", ext: "json")
         let productsData = loadMock(name: "products", ext: "json")

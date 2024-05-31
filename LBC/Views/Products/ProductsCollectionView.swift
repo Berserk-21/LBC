@@ -1,5 +1,5 @@
 //
-//  HomeCollectionView.swift
+//  ProductsCollectionView.swift
 //  LBC
 //
 //  Created by Berserk on 29/05/2024.
@@ -7,26 +7,28 @@
 
 import UIKit
 
-protocol HomeCollectionViewInterface: AnyObject {
+/// Use this protocol to communicate with the viewModel.
+protocol ProductCollectionViewInterface: AnyObject {
     func updateData()
 }
 
+/// Use this protocol to communicate with the viewController.
 protocol ProductsCollectionViewDelegate: AnyObject {
     func didSelectItemAt(indexPath: IndexPath)
 }
 
-final class HomeCollectionView: UICollectionView {
+final class ProductsCollectionView: UICollectionView {
     
     // MARK: - Properties
     
-    weak var viewModel: HomeViewModel?
+    weak var viewModel: ProductsViewModel?
     weak var productDelegate: ProductsCollectionViewDelegate?
     
     private var interItemSpacing = 16.0
     
     // MARK: - Life Cycle
     
-    init(viewModel: HomeViewModel? = nil) {
+    init(viewModel: ProductsViewModel? = nil) {
         self.viewModel = viewModel
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = interItemSpacing
@@ -51,7 +53,7 @@ final class HomeCollectionView: UICollectionView {
         
         delegate = self
         dataSource = self
-        register(HomeCollectionViewCell.self, forCellWithReuseIdentifier: HomeCollectionViewCell.identifier)
+        register(ProductsCollectionViewCell.self, forCellWithReuseIdentifier: ProductsCollectionViewCell.identifier)
     }
     
     // MARK: - Actions
@@ -65,26 +67,26 @@ final class HomeCollectionView: UICollectionView {
 
 // MARK: - UICollectionViewDataSource
 
-extension HomeCollectionView: UICollectionViewDataSource {
+extension ProductsCollectionView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel?.products.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = dequeueReusableCell(withReuseIdentifier: HomeCollectionViewCell.identifier, for: indexPath) as? HomeCollectionViewCell else {
+        guard let cell = dequeueReusableCell(withReuseIdentifier: ProductsCollectionViewCell.identifier, for: indexPath) as? ProductsCollectionViewCell else {
             fatalError("Make sure this does not happen")
         }
         
         if let productModel = viewModel?.products[indexPath.row] {
-            cell.configure(viewModel: ItemViewModel(product: productModel))
+            cell.configure(viewModel: ProductDetailViewModel(product: productModel))
         }
         
         return cell
     }
 }
 
-extension HomeCollectionView: UICollectionViewDelegate {
+extension ProductsCollectionView: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         productDelegate?.didSelectItemAt(indexPath: indexPath)
@@ -93,7 +95,7 @@ extension HomeCollectionView: UICollectionViewDelegate {
 
 // MARK: - UICollectionViewDelegateFlowLayout
 
-extension HomeCollectionView: UICollectionViewDelegateFlowLayout {
+extension ProductsCollectionView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
@@ -149,7 +151,7 @@ extension HomeCollectionView: UICollectionViewDelegateFlowLayout {
 
 // MARK: - HomeCollectionViewInterface
 
-extension HomeCollectionView: HomeCollectionViewInterface {
+extension ProductsCollectionView: ProductCollectionViewInterface {
     
     func updateData() {
         reloadData()

@@ -12,7 +12,7 @@ final class ProductDetailViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let viewModel: ItemViewModel
+    private let viewModel: ProductDetailViewModel
     private var cancellables = Set<AnyCancellable>()
     
     private let scrollView: UIScrollView = {
@@ -100,7 +100,7 @@ final class ProductDetailViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(viewModel: ItemViewModel) {
+    init(viewModel: ProductDetailViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
