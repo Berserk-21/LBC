@@ -8,17 +8,21 @@
 import Foundation
 import Combine
 
-class ItemViewModel: ObservableObject {
+class ItemViewModel {
     
     private var cancellables = Set<AnyCancellable>()
     
     let product: ProductModel
+    private let urlSession: URLSession
     
     var formattedPrice: String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         formatter.currencyCode = Locale.current.currencyCode ?? "EUR"
-        return formatter.string(from: NSNumber(floatLiteral: product.price)) ?? "---"
+        
+        // Not selling free products here :p
+        guard product.price > 0.0, let stringPrice = formatter.string(from: NSNumber(floatLiteral: product.price)) else { return Constants.HomeCollectionViewCell.invalidPriceText }
+        return stringPrice
     }
     
     var formattedDate: String {
@@ -48,11 +52,15 @@ class ItemViewModel: ObservableObject {
         return product.description
     }
     
-    var siret: String? {
+    var formattedSiret: String? {
         if let siret = product.siret {
             return "Siret: \(String(describing: siret))"
         }
         return nil
+    }
+    
+    var thumbImageUrlString: String? {
+        return product.imagesUrl.thumb
     }
     
     @Published var imageData: Data?
@@ -60,14 +68,15 @@ class ItemViewModel: ObservableObject {
     // Not using it because the quality is surprisingly worst than the thumbnail.
 //    @Published var smallImageData: Data?
     
-    init(product: ProductModel) {
+    init(product: ProductModel, urlSession: URLSession = URLSession.shared) {
         self.product = product
+        self.urlSession = urlSession
     }
     
     /// Uses this method to fetch the thumbnail Image reactively.
     func loadImage() {
         
-        guard let thumbUrlString = product.imagesUrl.thumb, let url = URL(string: thumbUrlString) else {
+        guard let thumbUrlString = thumbImageUrlString, let url = URL(string: thumbUrlString) else {
             imageData = nil
             return
         }
