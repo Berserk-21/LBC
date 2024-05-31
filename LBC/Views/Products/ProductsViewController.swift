@@ -104,7 +104,7 @@ extension ProductsViewController: ProductsViewControllerInterface {
     func presentAlert(with error: NetworkServiceError) {
         
         let alertController = UIAlertController(title: Constants.ProductViewController.Alert.errorTitle, message: Constants.ProductViewController.Alert.errorMessage, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "OK", style: .default))
+        alertController.addAction(UIAlertAction(title: Constants.ProductViewController.Alert.okTitle, style: .default))
         present(alertController, animated: true)
     }
 }

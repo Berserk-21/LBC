@@ -25,6 +25,7 @@ struct Constants {
             static let title = "Leboncoin"
         }
         struct Alert {
+            static let okTitle = "OK"
             static let errorTitle = "Impossible de charger les produits"
             static let errorMessage = "Vérifiez votre connexion et réessayez !"
         }
