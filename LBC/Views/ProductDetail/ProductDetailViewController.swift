@@ -97,7 +97,7 @@ final class ProductDetailViewController: UIViewController {
     private lazy var buyButton: UIButton = {
         let button = UIButton()
         // Cheat with some empty spaces to help self sizing width.
-        let attributedString = NSAttributedString(string: "   " + Constants.ProductDetailViewController.buyButtonTitle + "   ", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 18.0), NSAttributedString.Key.foregroundColor: UIColor.white])
+        let attributedString = NSAttributedString(string: "   " + Constants.ProductDetailViewController.buyButtonTitle + "   ", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 18.0, weight: .bold), NSAttributedString.Key.foregroundColor: UIColor.white])
         button.setAttributedTitle(attributedString, for: .normal)
         button.backgroundColor = .orange
         button.layer.cornerRadius = 8.0
