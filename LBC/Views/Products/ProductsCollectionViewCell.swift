@@ -72,9 +72,9 @@ final class ProductsCollectionViewCell: UICollectionViewCell {
         return v
     }()
     
-    private var isUrgentPadding: CGFloat = 8.0
-    private var isUrgentImageViewWidth: CGFloat = 20.0
-    private var isUrgentBackgroundViewWidth: CGFloat = 30.0
+    private let isUrgentPadding: CGFloat = 8.0
+    private let isUrgentImageViewWidth: CGFloat = 20.0
+    private let isUrgentBackgroundViewWidth: CGFloat = 30.0
     
     // Shared Fonts
     static let titleLabelFont = UIFont.systemFont(ofSize: 16.0, weight: UIFont.Weight.medium)
@@ -84,6 +84,7 @@ final class ProductsCollectionViewCell: UICollectionViewCell {
     static let creationDateLabelFont = UIFont.systemFont(ofSize: 14.0, weight: UIFont.Weight.light)
     static let isUrgentLabelFont = UIFont.systemFont(ofSize: 14.0, weight: UIFont.Weight.medium)
     static let siretLabelFont = UIFont.systemFont(ofSize: 12.0, weight: UIFont.Weight.light)
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         

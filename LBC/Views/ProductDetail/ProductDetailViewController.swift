@@ -94,9 +94,31 @@ final class ProductDetailViewController: UIViewController {
         return label
     }()
     
+    private lazy var buyButton: UIButton = {
+        let button = UIButton()
+        // Cheat with some empty spaces to help self sizing width.
+        let attributedString = NSAttributedString(string: "   " + Constants.ProductDetailViewController.buyButtonTitle + "   ", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 18.0), NSAttributedString.Key.foregroundColor: UIColor.white])
+        button.setAttributedTitle(attributedString, for: .normal)
+        button.backgroundColor = .orange
+        button.layer.cornerRadius = 8.0
+        button.layer.masksToBounds = true
+        button.isEnabled = false
+        return button
+    }()
+    
+    private var comingSoonLabel: UILabel = {
+        let label = UILabel()
+        label.text = Constants.ProductDetailViewController.comingSoon
+        label.font = UIFont.systemFont(ofSize: 12.0, weight: .light)
+        return label
+    }()
+    
     private var sidePadding: CGFloat = 16.0
     private var imageViewWidthMultiplier: CGFloat = 0.5
     private var stackViewSpacing: CGFloat = 8.0
+    
+    private var buttonWidth: CGFloat = 120.0
+    private var buttonHeight: CGFloat = 40.0
     
     // MARK: - Life Cycle
     
@@ -164,7 +186,17 @@ final class ProductDetailViewController: UIViewController {
         bottomStackView.spacing = stackViewSpacing
         containerView.addSubview(bottomStackView)
         
-        constraints.append(contentsOf: bottomStackView.anchors(leading: containerView.leadingAnchor, leadingConstant: sidePadding, trailing: containerView.trailingAnchor, trailingConstant: -sidePadding, top: productImageView.bottomAnchor, topConstant: sidePadding, bottom: containerView.bottomAnchor, bottomConstant: -sidePadding))
+        constraints.append(contentsOf: bottomStackView.anchors(leading: containerView.leadingAnchor, leadingConstant: sidePadding, trailing: containerView.trailingAnchor, trailingConstant: -sidePadding, top: productImageView.bottomAnchor, topConstant: sidePadding, bottom: nil))
+        
+        // Buy button
+        containerView.addSubview(buyButton)
+        constraints.append(contentsOf: buyButton.anchors(leading: nil, trailing: nil, top: bottomStackView.bottomAnchor, topConstant: sidePadding*2, bottom: nil))
+        constraints.append(buyButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor))
+        constraints.append(buyButton.heightAnchor.constraint(equalToConstant: buttonHeight))
+        
+        // Coming soon label
+        containerView.addSubview(comingSoonLabel)
+        constraints.append(contentsOf: comingSoonLabel.anchors(leading: nil, trailing: buyButton.trailingAnchor, top: buyButton.bottomAnchor, bottom: containerView.bottomAnchor, bottomConstant: -sidePadding))
         
         // Activate constraints
         NSLayoutConstraint.activate(constraints)

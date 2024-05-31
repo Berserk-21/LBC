@@ -25,4 +25,10 @@ struct Constants {
             static let errorMessage = "Vérifiez votre connexion et réessayez !"
         }
     }
+    
+    struct ProductDetailViewController {
+        static let buyButtonTitle = "ACHETER"
+        static let isUrgentText = "URGENT"
+        static let comingSoon = "coming soon.."
+    }
 }
