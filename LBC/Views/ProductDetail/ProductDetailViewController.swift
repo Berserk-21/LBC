@@ -185,8 +185,8 @@ final class ProductDetailViewController: UIViewController {
         isUrgentLabel.isHidden = !viewModel.isUrgent
         verticalSeparator.isHidden = isUrgentLabel.isHidden
         
-        siretLabel.text = viewModel.siret
-        siretLabel.isHidden = viewModel.siret == nil
+        siretLabel.text = viewModel.formattedSiret
+        siretLabel.isHidden = viewModel.formattedSiret == nil
         
         viewModel.$imageData
             .sink { [weak self] data in

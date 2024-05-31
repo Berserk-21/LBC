@@ -24,5 +24,6 @@ struct Constants {
         static let siretLabelFont = UIFont.systemFont(ofSize: 12.0, weight: UIFont.Weight.light)
         static let stackViewSpacing = 4.0
         static let imageRatio = 1.0
+        static let invalidPriceText = "Prix inconnu"
     }
 }

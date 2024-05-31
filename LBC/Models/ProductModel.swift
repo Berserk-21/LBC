@@ -30,6 +30,7 @@ struct ProductModel: Decodable {
         case creationDate = "creation_date"
         case isUrgent = "is_urgent"
         case siret
+        case category
     }
 }
 

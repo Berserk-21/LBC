@@ -12,8 +12,8 @@ final class HomeViewModel {
     
     // MARK: - Properties
     
-    let networkService: NetworkServiceInterface
-    var cancellables = Set<AnyCancellable>()
+    private let networkService: NetworkServiceInterface
+    private var cancellables = Set<AnyCancellable>()
     
     @Published var products = [ProductModel]()
     
@@ -57,7 +57,6 @@ final class HomeViewModel {
     }
     
     private func updateData() {
-        
         
         collectionView?.updateData()
     }
