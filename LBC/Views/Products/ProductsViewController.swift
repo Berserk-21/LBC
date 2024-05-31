@@ -16,10 +16,10 @@ final class ProductsViewController: UIViewController {
         cv.productDelegate = self
         return cv
     }()
+        
+    private let viewModel: ProductsViewModel
     
     private var sidePadding: CGFloat = 16.0
-    
-    let viewModel: ProductsViewModel
     
     // MARK: - Life Cycle
     

@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class ProductDetailViewModel {
+final class ProductDetailViewModel {
     
     // MARK: - Properties
     
