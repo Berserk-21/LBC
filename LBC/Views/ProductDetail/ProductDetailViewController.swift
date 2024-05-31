@@ -41,42 +41,42 @@ final class ProductDetailViewController: UIViewController {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = Constants.HomeCollectionViewCell.titleLabelFont
+        label.font = ProductsCollectionViewCell.titleLabelFont
         label.numberOfLines = 0
         return label
     }()
     
     private let priceLabel: UILabel = {
         let label = UILabel()
-        label.font = Constants.HomeCollectionViewCell.priceLabelFont
+        label.font = ProductsCollectionViewCell.priceLabelFont
         label.numberOfLines = 1
         return label
     }()
     
     private let descriptionLabel: UILabel = {
         let label = UILabel()
-        label.font = Constants.HomeCollectionViewCell.descriptionLabelFont
+        label.font = ProductsCollectionViewCell.descriptionLabelFont
         label.numberOfLines = 0
         return label
     }()
     
     private let categoryLabel: UILabel = {
         let label = UILabel()
-        label.font = Constants.HomeCollectionViewCell.categoryLabelFont
+        label.font = ProductsCollectionViewCell.categoryLabelFont
         label.numberOfLines = 1
         return label
     }()
     
     private let creationDateLabel: UILabel = {
         let label = UILabel()
-        label.font = Constants.HomeCollectionViewCell.creationDateLabelFont
+        label.font = ProductsCollectionViewCell.creationDateLabelFont
         label.numberOfLines = 1
         return label
     }()
     
     private let isUrgentLabel: UILabel = {
         let label = UILabel()
-        label.font = Constants.HomeCollectionViewCell.isUrgentLabelFont
+        label.font = ProductsCollectionViewCell.isUrgentLabelFont
         label.numberOfLines = 1
         return label
     }()
@@ -90,7 +90,7 @@ final class ProductDetailViewController: UIViewController {
     
     private let siretLabel: UILabel = {
         let label = UILabel()
-        label.font = Constants.HomeCollectionViewCell.siretLabelFont
+        label.font = ProductsCollectionViewCell.siretLabelFont
         return label
     }()
     
