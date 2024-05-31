@@ -30,28 +30,28 @@ final class ProductsCollectionViewCell: UICollectionViewCell {
     
     private var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = Constants.HomeCollectionViewCell.titleLabelFont
+        label.font = ProductsCollectionViewCell.titleLabelFont
         label.numberOfLines = 2
         return label
     }()
     
     private var priceLabel: UILabel = {
         let label = UILabel()
-        label.font = Constants.HomeCollectionViewCell.priceLabelFont
+        label.font = ProductsCollectionViewCell.priceLabelFont
         label.numberOfLines = 1
         return label
     }()
 
     private var categoryLabel: UILabel = {
         let label = UILabel()
-        label.font = Constants.HomeCollectionViewCell.categoryLabelFont
+        label.font = ProductsCollectionViewCell.categoryLabelFont
         label.numberOfLines = 1
         return label
     }()
     
     private var creationDateLabel: UILabel = {
         let label = UILabel()
-        label.font = Constants.HomeCollectionViewCell.creationDateLabelFont
+        label.font = ProductsCollectionViewCell.creationDateLabelFont
         label.numberOfLines = 1
         return label
     }()
@@ -72,9 +72,18 @@ final class ProductsCollectionViewCell: UICollectionViewCell {
         return v
     }()
     
-    private var isUrgentPadding: CGFloat = 8.0
-    private var isUrgentImageViewWidth: CGFloat = 20.0
-    private var isUrgentBackgroundViewWidth: CGFloat = 30.0
+    private let isUrgentPadding: CGFloat = 8.0
+    private let isUrgentImageViewWidth: CGFloat = 20.0
+    private let isUrgentBackgroundViewWidth: CGFloat = 30.0
+    
+    // Shared Fonts
+    static let titleLabelFont = UIFont.systemFont(ofSize: 16.0, weight: UIFont.Weight.medium)
+    static let priceLabelFont = UIFont.systemFont(ofSize: 16.0, weight: UIFont.Weight.heavy)
+    static let descriptionLabelFont = UIFont.systemFont(ofSize: 14.0, weight: UIFont.Weight.medium)
+    static let categoryLabelFont = UIFont.systemFont(ofSize: 14.0, weight: UIFont.Weight.regular)
+    static let creationDateLabelFont = UIFont.systemFont(ofSize: 14.0, weight: UIFont.Weight.light)
+    static let isUrgentLabelFont = UIFont.systemFont(ofSize: 14.0, weight: UIFont.Weight.medium)
+    static let siretLabelFont = UIFont.systemFont(ofSize: 12.0, weight: UIFont.Weight.light)
     
     override init(frame: CGRect) {
         super.init(frame: frame)

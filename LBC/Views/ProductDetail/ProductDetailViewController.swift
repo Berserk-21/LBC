@@ -41,42 +41,42 @@ final class ProductDetailViewController: UIViewController {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = Constants.HomeCollectionViewCell.titleLabelFont
+        label.font = ProductsCollectionViewCell.titleLabelFont
         label.numberOfLines = 0
         return label
     }()
     
     private let priceLabel: UILabel = {
         let label = UILabel()
-        label.font = Constants.HomeCollectionViewCell.priceLabelFont
+        label.font = ProductsCollectionViewCell.priceLabelFont
         label.numberOfLines = 1
         return label
     }()
     
     private let descriptionLabel: UILabel = {
         let label = UILabel()
-        label.font = Constants.HomeCollectionViewCell.descriptionLabelFont
+        label.font = ProductsCollectionViewCell.descriptionLabelFont
         label.numberOfLines = 0
         return label
     }()
     
     private let categoryLabel: UILabel = {
         let label = UILabel()
-        label.font = Constants.HomeCollectionViewCell.categoryLabelFont
+        label.font = ProductsCollectionViewCell.categoryLabelFont
         label.numberOfLines = 1
         return label
     }()
     
     private let creationDateLabel: UILabel = {
         let label = UILabel()
-        label.font = Constants.HomeCollectionViewCell.creationDateLabelFont
+        label.font = ProductsCollectionViewCell.creationDateLabelFont
         label.numberOfLines = 1
         return label
     }()
     
     private let isUrgentLabel: UILabel = {
         let label = UILabel()
-        label.font = Constants.HomeCollectionViewCell.isUrgentLabelFont
+        label.font = ProductsCollectionViewCell.isUrgentLabelFont
         label.numberOfLines = 1
         return label
     }()
@@ -90,13 +90,35 @@ final class ProductDetailViewController: UIViewController {
     
     private let siretLabel: UILabel = {
         let label = UILabel()
-        label.font = Constants.HomeCollectionViewCell.siretLabelFont
+        label.font = ProductsCollectionViewCell.siretLabelFont
+        return label
+    }()
+    
+    private lazy var buyButton: UIButton = {
+        let button = UIButton()
+        // Cheat with some empty spaces to help self sizing width.
+        let attributedString = NSAttributedString(string: "   " + Constants.ProductDetailViewController.buyButtonTitle + "   ", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 18.0, weight: .bold), NSAttributedString.Key.foregroundColor: UIColor.white])
+        button.setAttributedTitle(attributedString, for: .normal)
+        button.backgroundColor = .orange
+        button.layer.cornerRadius = 8.0
+        button.layer.masksToBounds = true
+        button.isEnabled = false
+        return button
+    }()
+    
+    private var comingSoonLabel: UILabel = {
+        let label = UILabel()
+        label.text = Constants.ProductDetailViewController.comingSoon
+        label.font = UIFont.systemFont(ofSize: 12.0, weight: .light)
         return label
     }()
     
     private var sidePadding: CGFloat = 16.0
     private var imageViewWidthMultiplier: CGFloat = 0.5
     private var stackViewSpacing: CGFloat = 8.0
+    
+    private var buttonWidth: CGFloat = 120.0
+    private var buttonHeight: CGFloat = 40.0
     
     // MARK: - Life Cycle
     
@@ -164,7 +186,17 @@ final class ProductDetailViewController: UIViewController {
         bottomStackView.spacing = stackViewSpacing
         containerView.addSubview(bottomStackView)
         
-        constraints.append(contentsOf: bottomStackView.anchors(leading: containerView.leadingAnchor, leadingConstant: sidePadding, trailing: containerView.trailingAnchor, trailingConstant: -sidePadding, top: productImageView.bottomAnchor, topConstant: sidePadding, bottom: containerView.bottomAnchor, bottomConstant: -sidePadding))
+        constraints.append(contentsOf: bottomStackView.anchors(leading: containerView.leadingAnchor, leadingConstant: sidePadding, trailing: containerView.trailingAnchor, trailingConstant: -sidePadding, top: productImageView.bottomAnchor, topConstant: sidePadding, bottom: nil))
+        
+        // Buy button
+        containerView.addSubview(buyButton)
+        constraints.append(contentsOf: buyButton.anchors(leading: nil, trailing: nil, top: bottomStackView.bottomAnchor, topConstant: sidePadding*2, bottom: nil))
+        constraints.append(buyButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor))
+        constraints.append(buyButton.heightAnchor.constraint(equalToConstant: buttonHeight))
+        
+        // Coming soon label
+        containerView.addSubview(comingSoonLabel)
+        constraints.append(contentsOf: comingSoonLabel.anchors(leading: nil, trailing: buyButton.trailingAnchor, top: buyButton.bottomAnchor, bottom: containerView.bottomAnchor, bottomConstant: -sidePadding))
         
         // Activate constraints
         NSLayoutConstraint.activate(constraints)

@@ -124,14 +124,14 @@ extension ProductsCollectionView: UICollectionViewDelegateFlowLayout {
                 
         var itemHeight: CGFloat = imageHeight
         
-        itemHeight += heightForLabel(text: model.title, font: Constants.HomeCollectionViewCell.titleLabelFont, width: itemWidth, maxLines: 2)
-        itemHeight += heightForLabel(text: "\(model.price)€", font: Constants.HomeCollectionViewCell.titleLabelFont, width: itemWidth)
+        itemHeight += heightForLabel(text: model.title, font: ProductsCollectionViewCell.titleLabelFont, width: itemWidth, maxLines: 2)
+        itemHeight += heightForLabel(text: "\(model.price)€", font: ProductsCollectionViewCell.titleLabelFont, width: itemWidth)
         
         if let unwrappedCategory = model.category {
-            itemHeight += heightForLabel(text: unwrappedCategory, font: Constants.HomeCollectionViewCell.categoryLabelFont, width: itemWidth)
+            itemHeight += heightForLabel(text: unwrappedCategory, font: ProductsCollectionViewCell.categoryLabelFont, width: itemWidth)
         }
         
-        itemHeight += heightForLabel(text: model.creationDate, font: Constants.HomeCollectionViewCell.creationDateLabelFont, width: itemWidth)
+        itemHeight += heightForLabel(text: model.creationDate, font: ProductsCollectionViewCell.creationDateLabelFont, width: itemWidth)
         
         return CGSize(width: itemWidth, height: itemHeight)
     }
