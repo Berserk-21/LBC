@@ -7,6 +7,7 @@
 
 import UIKit
 
+/// Use this protocol to communicate with the controller from the viewModel.
 protocol ProductsViewControllerInterface: AnyObject {
     func presentAlert(with error: NetworkServiceError)
 }

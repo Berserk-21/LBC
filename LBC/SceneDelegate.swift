@@ -18,6 +18,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let scene = (scene as? UIWindowScene) else { return }
         
+        // We could add a Coordinator to handle presenting windows, controllers and navigations.
+        
         window = UIWindow(windowScene: scene)
         window?.rootViewController = UINavigationController(rootViewController: ProductsViewController())
         window?.makeKeyAndVisible()
