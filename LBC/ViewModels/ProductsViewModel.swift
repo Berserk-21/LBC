@@ -37,21 +37,17 @@ final class ProductsViewModel {
     private func fetchData() {
         
         networkService.fetchData()
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] result in
                 switch result {
                 case .finished:
                     break
                 case .failure(let error):
-                    DispatchQueue.main.async {
-                        self?.presentAlert(error)
-                    }
+                    self?.presentAlert(error)
                 }
             } receiveValue: { [weak self] products in
-                
-                DispatchQueue.main.async {
-                    self?.products = products
-                    self?.updateData()
-                }
+                self?.products = products
+                self?.updateData()
             }
             .store(in: &cancellables)
     }
