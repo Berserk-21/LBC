@@ -17,7 +17,7 @@ final class ProductsViewModel {
     
     @Published var products = [ProductModel]()
     
-    weak var collectionView: ProductCollectionViewInterface?
+    weak var collectionViewInterface: ProductCollectionViewInterface?
     weak var productsViewControllerDelegate: ProductsViewControllerInterface?
     
     // MARK: - Life Cycle
@@ -60,6 +60,6 @@ final class ProductsViewModel {
     
     private func updateData() {
         
-        collectionView?.updateData()
+        collectionViewInterface?.updateData()
     }
 }

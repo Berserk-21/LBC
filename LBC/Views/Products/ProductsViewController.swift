@@ -65,7 +65,7 @@ final class ProductsViewController: UIViewController {
     private func setupBindings() {
         
         // Make sure references are weak.
-        viewModel.collectionView = collectionView
+        viewModel.collectionViewInterface = collectionView
         collectionView.viewModel = viewModel
         viewModel.productsViewControllerDelegate = self
     }
