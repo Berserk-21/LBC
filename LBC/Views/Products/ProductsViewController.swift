@@ -6,11 +6,7 @@
 //
 
 import UIKit
-
-/// Use this protocol to communicate with the controller from the viewModel.
-protocol ProductsViewControllerInterface: AnyObject {
-    func presentAlert(with error: NetworkServiceError)
-}
+import Combine
 
 final class ProductsViewController: UIViewController {
     
@@ -23,6 +19,8 @@ final class ProductsViewController: UIViewController {
     }()
         
     private let viewModel: ProductsViewModel
+    
+    private var cancellables = Set<AnyCancellable>()
     
     private var sidePadding: CGFloat = 16.0
     
@@ -64,10 +62,20 @@ final class ProductsViewController: UIViewController {
     /// Binds viewModel and Views.
     private func setupBindings() {
         
-        // Make sure references are weak.
-        viewModel.collectionViewInterface = collectionView
-        collectionView.viewModel = viewModel
-        viewModel.productsViewControllerDelegate = self
+        viewModel.$products
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] products in
+                self?.collectionView.products = products
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$error
+            .receive(on: DispatchQueue.main)
+            .compactMap({ $0 })
+            .sink { [weak self] error in
+                self?.presentAlert(with: error)
+            }
+            .store(in: &cancellables)
     }
     
     private func start() {
@@ -83,6 +91,13 @@ final class ProductsViewController: UIViewController {
         
         NSLayoutConstraint.activate(collectionViewConstraints)
     }
+    
+    func presentAlert(with error: NetworkServiceError) {
+        
+        let alertController = UIAlertController(title: Constants.ProductViewController.Alert.errorTitle, message: Constants.ProductViewController.Alert.errorMessage, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: Constants.ProductViewController.Alert.okTitle, style: .default))
+        present(alertController, animated: true)
+    }
 }
 
 // MARK: - ProductsCollectionViewDelegate
@@ -95,17 +110,5 @@ extension ProductsViewController: ProductsCollectionViewDelegate {
         
         let detailVC = ProductDetailViewController(viewModel: ProductDetailViewModel(product: viewModel.products[indexPath.row]))
         navigationController?.pushViewController(detailVC, animated: true)
-    }
-}
-
-// MARK: - ProductsViewControllerInterface
-
-extension ProductsViewController: ProductsViewControllerInterface {
-    
-    func presentAlert(with error: NetworkServiceError) {
-        
-        let alertController = UIAlertController(title: Constants.ProductViewController.Alert.errorTitle, message: Constants.ProductViewController.Alert.errorMessage, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: Constants.ProductViewController.Alert.okTitle, style: .default))
-        present(alertController, animated: true)
     }
 }

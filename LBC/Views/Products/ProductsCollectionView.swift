@@ -7,11 +7,6 @@
 
 import UIKit
 
-/// Use this protocol to communicate with the viewModel.
-protocol ProductCollectionViewInterface: AnyObject {
-    func updateData()
-}
-
 /// Use this protocol to communicate with the viewController.
 protocol ProductsCollectionViewDelegate: AnyObject {
     func didSelectItemAt(indexPath: IndexPath)
@@ -21,7 +16,12 @@ final class ProductsCollectionView: UICollectionView {
     
     // MARK: - Properties
     
-    weak var viewModel: ProductsViewModel?
+    var products: [ProductModel] = [] {
+        didSet {
+            reloadData()
+        }
+    }
+
     weak var productDelegate: ProductsCollectionViewDelegate?
     
     private var interItemSpacing = 16.0
@@ -29,7 +29,7 @@ final class ProductsCollectionView: UICollectionView {
     // MARK: - Life Cycle
     
     init(viewModel: ProductsViewModel? = nil) {
-        self.viewModel = viewModel
+
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = interItemSpacing
         layout.minimumLineSpacing = interItemSpacing
@@ -70,7 +70,7 @@ final class ProductsCollectionView: UICollectionView {
 extension ProductsCollectionView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel?.products.count ?? 0
+        return products.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -78,9 +78,9 @@ extension ProductsCollectionView: UICollectionViewDataSource {
             fatalError("Make sure this does not happen")
         }
         
-        if let productModel = viewModel?.products[indexPath.row] {
-            cell.configure(viewModel: ProductDetailViewModel(product: productModel))
-        }
+        guard indexPath.row < products.count else {fatalError("Make sure this does not happen") }
+        
+        cell.configure(viewModel: ProductDetailViewModel(product: products[indexPath.row]))
         
         return cell
     }
@@ -99,7 +99,9 @@ extension ProductsCollectionView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        guard let model = viewModel?.products[indexPath.row] else { return .zero }
+        guard indexPath.row < products.count else { return .zero }
+        
+        let model = products[indexPath.row]
         
         let availableWidth = collectionView.frame.width
         let numberOfColumns: Int
@@ -147,14 +149,4 @@ extension ProductsCollectionView: UICollectionViewDelegateFlowLayout {
         
         return ceil(estimatedSize.height) + Constants.HomeCollectionViewCell.stackViewSpacing
     }
-}
-
-// MARK: - HomeCollectionViewInterface
-
-extension ProductsCollectionView: ProductCollectionViewInterface {
-    
-    func updateData() {
-        reloadData()
-    }
-    
 }

@@ -16,9 +16,7 @@ final class ProductsViewModel {
     private var cancellables = Set<AnyCancellable>()
     
     @Published var products = [ProductModel]()
-    
-    weak var collectionViewInterface: ProductCollectionViewInterface?
-    weak var productsViewControllerDelegate: ProductsViewControllerInterface?
+    @Published var error: NetworkServiceError?
     
     // MARK: - Life Cycle
     
@@ -43,23 +41,11 @@ final class ProductsViewModel {
                 case .finished:
                     break
                 case .failure(let error):
-                    self?.presentAlert(error)
+                    self?.error = error
                 }
             } receiveValue: { [weak self] products in
                 self?.products = products
-                self?.updateData()
             }
             .store(in: &cancellables)
-    }
-    
-    // Could create a protocol to communicate with the viewController and present errors.
-    private func presentAlert(_ error: NetworkServiceError) {
-        
-        productsViewControllerDelegate?.presentAlert(with: error)
-    }
-    
-    private func updateData() {
-        
-        collectionViewInterface?.updateData()
     }
 }
