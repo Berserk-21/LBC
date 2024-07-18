@@ -230,5 +230,4 @@ final class ProductDetailViewController: UIViewController {
         
         viewModel.loadImage()
     }
-    
 }

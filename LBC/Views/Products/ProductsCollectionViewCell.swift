@@ -135,6 +135,8 @@ final class ProductsCollectionViewCell: UICollectionViewCell {
     }
     
     func configure(viewModel: ProductDetailViewModel) {
+        
+        self.viewModel = viewModel
                         
         titleLabel.text = viewModel.title
         priceLabel.text = viewModel.formattedPrice
@@ -142,13 +144,13 @@ final class ProductsCollectionViewCell: UICollectionViewCell {
         creationDateLabel.text = viewModel.formattedDate
         isUrgentBackgroundView.isHidden = !viewModel.isUrgent
         
-        viewModel.$imageData.sink(receiveValue: { [weak self] data in
-            
-            if let imageData = data, let image = UIImage(data: imageData) {
-                self?.thumbImageView.image = image
+        viewModel.$imageData
+            .sink { [weak self] data in
+                if let imageData = data, let image = UIImage(data: imageData) {
+                    self?.thumbImageView.image = image
+                }
             }
-        })
-        .store(in: &cancellables)
+            .store(in: &cancellables)
         
         viewModel.loadImage()
     }

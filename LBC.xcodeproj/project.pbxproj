@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C22AC412C492033008B3FDA /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C22AC402C492033008B3FDA /* ImageDownloader.swift */; };
 		2C2EE3E12C07164300BDC1FD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2EE3E02C07164300BDC1FD /* AppDelegate.swift */; };
 		2C2EE3E32C07164300BDC1FD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2EE3E22C07164300BDC1FD /* SceneDelegate.swift */; };
 		2C2EE3E52C07164300BDC1FD /* ProductsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2EE3E42C07164300BDC1FD /* ProductsViewController.swift */; };
@@ -44,6 +45,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2C22AC402C492033008B3FDA /* ImageDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
 		2C2EE3DD2C07164300BDC1FD /* LBC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LBC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C2EE3E02C07164300BDC1FD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2C2EE3E22C07164300BDC1FD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 			isa = PBXGroup;
 			children = (
 				2C2EE4252C071DE000BDC1FD /* NetworkService.swift */,
+				2C22AC402C492033008B3FDA /* ImageDownloader.swift */,
 				2C8C20E22C0884B900628BE2 /* ImageCache.swift */,
 			);
 			path = Services;
@@ -332,6 +335,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C2EE4262C071DE000BDC1FD /* NetworkService.swift in Sources */,
+				2C22AC412C492033008B3FDA /* ImageDownloader.swift in Sources */,
 				2C2EE4172C071C4A00BDC1FD /* ProductsCollectionViewCell.swift in Sources */,
 				2C2EE4292C07252200BDC1FD /* Anchors.swift in Sources */,
 				2C2EE41D2C071CB500BDC1FD /* CategoryModel.swift in Sources */,

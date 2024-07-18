@@ -15,6 +15,7 @@ final class ProductDetailViewModel {
     private var cancellables = Set<AnyCancellable>()
     
     private let product: ProductModel
+    private let imageDownloader: ImageDownloader
     private let urlSession: URLSession
     
     var formattedPrice: String {
@@ -72,9 +73,10 @@ final class ProductDetailViewModel {
     
     // MARK: - Life Cycle
     
-    init(product: ProductModel, urlSession: URLSession = URLSession.shared) {
+    init(product: ProductModel, urlSession: URLSession = URLSession.shared, imageDownloader: ImageDownloader = ImageDownloader()) {
         self.product = product
         self.urlSession = urlSession
+        self.imageDownloader = imageDownloader
     }
     
     // MARK: - Fetch Data
@@ -92,17 +94,29 @@ final class ProductDetailViewModel {
             return
         }
         
-        URLSession.shared.dataTaskPublisher(for: url)
-            .map{ $0.data }
-            .handleEvents(receiveOutput: { output in
-                if let unwrappedData = output {
-                    ImageCache.shared.setImage(unwrappedData, forKey: thumbUrlString)
-                }
-            })
-            .replaceError(with: nil)
-            .subscribe(on: DispatchQueue.global(qos: .background))
+        imageDownloader.downloadImage(from: url)
             .receive(on: DispatchQueue.main)
-            .assign(to: \.imageData, on: self)
+            .sink(receiveCompletion: { completion in
+                if case let .failure(error) = completion {
+                    print("Failed to download Image: ",error.localizedDescription)
+                }
+            }, receiveValue: { [weak self] data in
+                self?.imageData = data
+                ImageCache.shared.setImage(data, forKey: thumbUrlString)
+            })
             .store(in: &cancellables)
+        
+//        URLSession.shared.dataTaskPublisher(for: url)
+//            .map{ $0.data }
+//            .handleEvents(receiveOutput: { output in
+//                if let unwrappedData = output {
+//                    ImageCache.shared.setImage(unwrappedData, forKey: thumbUrlString)
+//                }
+//            })
+//            .replaceError(with: nil)
+//            .subscribe(on: DispatchQueue.global(qos: .background))
+//            .receive(on: DispatchQueue.main)
+//            .assign(to: \.imageData, on: self)
+//            .store(in: &cancellables)
     }
 }
