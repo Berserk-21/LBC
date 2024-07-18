@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2C22AC412C492033008B3FDA /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C22AC402C492033008B3FDA /* ImageDownloader.swift */; };
+		2C22AC432C496FA1008B3FDA /* thumb_test.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 2C22AC422C496FA1008B3FDA /* thumb_test.jpeg */; };
 		2C2EE3E12C07164300BDC1FD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2EE3E02C07164300BDC1FD /* AppDelegate.swift */; };
 		2C2EE3E32C07164300BDC1FD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2EE3E22C07164300BDC1FD /* SceneDelegate.swift */; };
 		2C2EE3E52C07164300BDC1FD /* ProductsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2EE3E42C07164300BDC1FD /* ProductsViewController.swift */; };
@@ -46,6 +47,7 @@
 
 /* Begin PBXFileReference section */
 		2C22AC402C492033008B3FDA /* ImageDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
+		2C22AC422C496FA1008B3FDA /* thumb_test.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = thumb_test.jpeg; path = LBC/Ressources/Assets.xcassets/thumb_test.imageset/thumb_test.jpeg; sourceTree = SOURCE_ROOT; };
 		2C2EE3DD2C07164300BDC1FD /* LBC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LBC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C2EE3E02C07164300BDC1FD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2C2EE3E22C07164300BDC1FD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 			children = (
 				2C8C20D72C0784B700628BE2 /* MockNetworkService.swift */,
 				2C8C20E62C08D2DC00628BE2 /* URLProtocolMock.swift */,
+				2C22AC422C496FA1008B3FDA /* thumb_test.jpeg */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -323,6 +326,7 @@
 			files = (
 				2C8C20DC2C078B6400628BE2 /* products.json in Resources */,
 				2C8C20DE2C078B7800628BE2 /* categories.json in Resources */,
+				2C22AC432C496FA1008B3FDA /* thumb_test.jpeg in Resources */,
 				2C8C20EB2C08D93900628BE2 /* itemProducts.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

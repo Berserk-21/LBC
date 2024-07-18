@@ -13,6 +13,7 @@ final class ItemViewModelTests: XCTestCase {
     
     var itemViewModels: [ProductDetailViewModel]!
     var cancellables = Set<AnyCancellable>()
+    var session: URLSession!
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -22,7 +23,7 @@ final class ItemViewModelTests: XCTestCase {
         
         let config = URLSessionConfiguration.ephemeral
         config.protocolClasses = [URLProtocolMock.self]
-        let session = URLSession(configuration: config)
+        session = URLSession(configuration: config)
         itemViewModels = [ProductDetailViewModel(product: products[0], urlSession: session), ProductDetailViewModel(product: products[1])]
     }
 
@@ -77,20 +78,88 @@ final class ItemViewModelTests: XCTestCase {
         
         URLProtocolMock.testURLs = [imageUrl: testImageData]
         URLProtocolMock.loadingHandler = { request in
-            return (HTTPURLResponse(), testImageData)
+            let response = HTTPURLResponse(url: request.url!, statusCode: 200, httpVersion: nil, headerFields: nil)!
+            let data = testImageData
+            return (response, data)
         }
         
         itemViewModels[0].$imageData
-        .dropFirst()
-        .sink { data in
-            let fetchedImageData = UIImage(data: data!)!.pngData()!
-            XCTAssertEqual(fetchedImageData, testImageData)
-            expectation.fulfill()
-        }
-        .store(in: &cancellables)
+            .dropFirst()
+            .sink { data in
+                let fetchedImageData = UIImage(data: data!)!.pngData()!
+                XCTAssertEqual(fetchedImageData, testImageData)
+                expectation.fulfill()
+            }
+            .store(in: &cancellables)
 
         itemViewModels[0].loadImage()
         
         waitForExpectations(timeout: 5)
+    }
+    
+    func testStaticResponse() {
+        
+        let url = URL(string: itemViewModels[0].thumbImageUrlString!)!
+        let testImageData = (UIImage(named: "thumb_test")?.pngData())!
+        
+        URLProtocolMock.testURLs[url] = testImageData
+        
+        let expectation = self.expectation(description: "Completion handler invoked")
+        var receivedData: Data?
+        var statusCode: Int?
+        var responseError: Error?
+        
+        let dataTask = session.dataTask(with: url) { data, response, error in
+            receivedData = data
+            statusCode = (response as? HTTPURLResponse)?.statusCode
+            responseError = error
+            expectation.fulfill()
+        }
+        dataTask.resume()
+        
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        XCTAssertNil(responseError)
+        XCTAssertEqual(statusCode, 200)
+        XCTAssertNotNil(receivedData)
+        XCTAssertEqual(testImageData, receivedData)
+    }
+    
+    var imageDownloader: ImageDownloader!
+
+    func testImageDownload() {
+        
+        let url = URL(string: itemViewModels[0].thumbImageUrlString!)!
+        let bundle = Bundle(for: type(of: self))
+        guard let url = bundle.url(forResource: "thumb_test", withExtension: "jpeg"), let expectedData = try? Data(contentsOf: url) else {
+            XCTFail("Failed to load image from bundle")
+            return
+        }
+        
+        URLProtocolMock.testURLs = [url: expectedData]
+        
+        let expectation = self.expectation(description: "Completion handler invoked")
+        var receivedData: Data?
+        var responseError: Error?
+        
+        imageDownloader = ImageDownloader(session: session)
+        imageDownloader.downloadImage(from: url)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    responseError = error
+                case .finished:
+                    expectation.fulfill()
+                }
+            } receiveValue: { resultData in
+                receivedData = resultData
+            }
+            .store(in: &cancellables)
+
+        waitForExpectations(timeout: 5)
+        
+        XCTAssertNil(responseError)
+        XCTAssertNotNil(receivedData!)
+        XCTAssertEqual(receivedData!, expectedData)
     }
 }
