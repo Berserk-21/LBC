@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 /// Use this protocol to communicate with the viewController.
 protocol ProductsCollectionViewDelegate: AnyObject {
@@ -22,6 +23,8 @@ final class ProductsCollectionView: UICollectionView {
     
     private var interItemSpacing = 16.0
     
+    private var cancellables = Set<AnyCancellable>()
+    
     // MARK: - Life Cycle
     
     init(viewModel: ProductsViewModel) {
@@ -32,13 +35,17 @@ final class ProductsCollectionView: UICollectionView {
         super.init(frame: .zero, collectionViewLayout: layout)
         
         setupCollectionView()
-        observeDeviceOrientation()
+        setupBindings()
     }
     
-    // This should not be done in the view. Move later if enough time.
-    private func observeDeviceOrientation() {
+    private func setupBindings() {
         
-        NotificationCenter.default.addObserver(self, selector: #selector(didChangeDeviceOrientation), name: UIDevice.orientationDidChangeNotification, object: nil)
+        viewModel.$products
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] products in
+                self?.reloadData()
+            }
+            .store(in: &cancellables)
     }
     
     required init?(coder: NSCoder) {
@@ -54,7 +61,7 @@ final class ProductsCollectionView: UICollectionView {
     
     // MARK: - Actions
     
-    @objc private func didChangeDeviceOrientation() {
+    private func didChangeDeviceOrientation() {
         
         collectionViewLayout.invalidateLayout()
     }

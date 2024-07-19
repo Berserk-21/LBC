@@ -61,13 +61,6 @@ final class ProductsViewController: UIViewController {
     /// Binds viewModel and Views.
     private func setupBindings() {
         
-        viewModel.$products
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] products in
-                self?.collectionView.reloadData()
-            }
-            .store(in: &cancellables)
-        
         viewModel.$error
             .receive(on: DispatchQueue.main)
             .compactMap({ $0 })
