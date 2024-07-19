@@ -7,21 +7,26 @@
 
 import Foundation
 import Combine
+import UIKit
 
 final class ProductsViewModel {
     
     // MARK: - Properties
     
     private let networkService: NetworkServiceInterface
+    private let orientationService: DeviceOrientationService
+    
     private var cancellables = Set<AnyCancellable>()
     
     @Published var products = [ProductModel]()
     @Published var error: NetworkServiceError?
+    @Published var deviceOrientation: UIDeviceOrientation = .unknown
     
     // MARK: - Life Cycle
     
-    init(networkService: NetworkServiceInterface = NetworkService()) {
+    init(networkService: NetworkServiceInterface = NetworkService(), orientationService: DeviceOrientationService = DeviceOrientationService.shared) {
         self.networkService = networkService
+        self.orientationService = orientationService
     }
     
     // MARK: - Business Logic
@@ -45,6 +50,13 @@ final class ProductsViewModel {
                 }
             } receiveValue: { [weak self] products in
                 self?.products = products
+            }
+            .store(in: &cancellables)
+        
+        orientationService.orientationPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] orientation in
+                self?.deviceOrientation = orientation
             }
             .store(in: &cancellables)
     }

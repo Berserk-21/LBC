@@ -46,6 +46,15 @@ final class ProductsCollectionView: UICollectionView {
                 self?.reloadData()
             }
             .store(in: &cancellables)
+        
+        viewModel.$deviceOrientation
+            .receive(on: DispatchQueue.main)
+        // Always skip the first initial event. The collectionView already reload when products are received.
+            .dropFirst()
+            .sink { [weak self] orientation in
+                self?.reloadData()
+            }
+            .store(in: &cancellables)
     }
     
     required init?(coder: NSCoder) {
