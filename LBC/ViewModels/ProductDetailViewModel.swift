@@ -98,7 +98,7 @@ final class ProductDetailViewModel {
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
                 if case let .failure(error) = completion {
-                    print("Failed to download Image: ",error.localizedDescription)
+                    print("Failed to download image for \(url): ",error)
                 }
             }, receiveValue: { [weak self] data in
                 self?.imageData = data
