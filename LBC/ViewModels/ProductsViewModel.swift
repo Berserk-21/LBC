@@ -14,7 +14,7 @@ final class ProductsViewModel {
     // MARK: - Properties
     
     private let networkService: NetworkServiceInterface
-    private let orientationService: DeviceOrientationService
+    private let orientationService: DeviceOrientationServiceInterface
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -24,7 +24,7 @@ final class ProductsViewModel {
     
     // MARK: - Life Cycle
     
-    init(networkService: NetworkServiceInterface = NetworkService(), orientationService: DeviceOrientationService = DeviceOrientationService.shared) {
+    init(networkService: NetworkServiceInterface = NetworkService(), orientationService: DeviceOrientationServiceInterface = DeviceOrientationService.shared) {
         self.networkService = networkService
         self.orientationService = orientationService
     }

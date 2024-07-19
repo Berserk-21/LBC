@@ -8,7 +8,11 @@
 import Combine
 import UIKit
 
-final class DeviceOrientationService {
+protocol DeviceOrientationServiceInterface {
+    var orientationPublisher: AnyPublisher<UIDeviceOrientation, Never> { get }
+}
+
+final class DeviceOrientationService: DeviceOrientationServiceInterface {
     
     static let shared = DeviceOrientationService()
     
