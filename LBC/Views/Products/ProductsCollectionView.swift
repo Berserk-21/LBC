@@ -16,20 +16,16 @@ final class ProductsCollectionView: UICollectionView {
     
     // MARK: - Properties
     
-    var products: [ProductModel] = [] {
-        didSet {
-            reloadData()
-        }
-    }
-
+    let viewModel: ProductsViewModel
+    
     weak var productDelegate: ProductsCollectionViewDelegate?
     
     private var interItemSpacing = 16.0
     
     // MARK: - Life Cycle
     
-    init(viewModel: ProductsViewModel? = nil) {
-
+    init(viewModel: ProductsViewModel) {
+        self.viewModel = viewModel
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = interItemSpacing
         layout.minimumLineSpacing = interItemSpacing
@@ -70,7 +66,7 @@ final class ProductsCollectionView: UICollectionView {
 extension ProductsCollectionView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return products.count
+        return viewModel.products.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -78,9 +74,9 @@ extension ProductsCollectionView: UICollectionViewDataSource {
             fatalError("Make sure this does not happen")
         }
         
-        guard indexPath.row < products.count else {fatalError("Make sure this does not happen") }
+        guard indexPath.row < viewModel.products.count else {fatalError("Make sure this does not happen") }
         
-        cell.configure(viewModel: ProductDetailViewModel(product: products[indexPath.row]))
+        cell.configure(viewModel: ProductDetailViewModel(product: viewModel.products[indexPath.row]))
         
         return cell
     }
@@ -99,9 +95,9 @@ extension ProductsCollectionView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        guard indexPath.row < products.count else { return .zero }
+        guard indexPath.row < viewModel.products.count else { return .zero }
         
-        let model = products[indexPath.row]
+        let model = viewModel.products[indexPath.row]
         
         let availableWidth = collectionView.frame.width
         let numberOfColumns: Int

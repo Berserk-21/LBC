@@ -44,7 +44,6 @@ final class ProductsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         
         setupBindings()
         start()
@@ -65,7 +64,7 @@ final class ProductsViewController: UIViewController {
         viewModel.$products
             .receive(on: DispatchQueue.main)
             .sink { [weak self] products in
-                self?.collectionView.products = products
+                self?.collectionView.reloadData()
             }
             .store(in: &cancellables)
         
