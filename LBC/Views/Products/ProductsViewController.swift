@@ -18,7 +18,7 @@ final class ProductsViewController: UIViewController {
         return cv
     }()
         
-    private let viewModel: ProductsViewModel
+    private let viewModel: ProductsViewModelInterface
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -61,7 +61,7 @@ final class ProductsViewController: UIViewController {
     /// Binds viewModel and Views.
     private func setupBindings() {
         
-        viewModel.$error
+        viewModel.errorPublisher
             .receive(on: DispatchQueue.main)
             .compactMap({ $0 })
             .sink { [weak self] error in
@@ -70,9 +70,15 @@ final class ProductsViewController: UIViewController {
             .store(in: &cancellables)
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        viewModel.viewWillLayoutSubviewsSubject.send()
+    }
+    
     private func start() {
         
-        viewModel.start()
+        viewModel.fetchData()
     }
     
     /// Adds views, creates and activates constraints.

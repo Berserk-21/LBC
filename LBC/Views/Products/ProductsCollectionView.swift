@@ -17,7 +17,7 @@ final class ProductsCollectionView: UICollectionView {
     
     // MARK: - Properties
     
-    let viewModel: ProductsViewModel
+    let viewModel: ProductsViewModelInterface
     
     weak var productDelegate: ProductsCollectionViewDelegate?
     
@@ -27,7 +27,7 @@ final class ProductsCollectionView: UICollectionView {
     
     // MARK: - Life Cycle
     
-    init(viewModel: ProductsViewModel) {
+    init(viewModel: ProductsViewModelInterface) {
         self.viewModel = viewModel
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = interItemSpacing
@@ -40,14 +40,14 @@ final class ProductsCollectionView: UICollectionView {
     
     private func setupBindings() {
         
-        viewModel.$products
+        viewModel.productsPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] products in
                 self?.reloadData()
             }
             .store(in: &cancellables)
         
-        viewModel.$deviceOrientation
+        viewModel.viewWillLayoutSubviewsPublisher
             .receive(on: DispatchQueue.main)
         // Always skip the first initial event. The collectionView already reload when products are received.
             .dropFirst()
@@ -87,10 +87,10 @@ extension ProductsCollectionView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = dequeueReusableCell(withReuseIdentifier: ProductsCollectionViewCell.identifier, for: indexPath) as? ProductsCollectionViewCell else {
-            fatalError("Make sure this does not happen")
+            fatalError("Dequeue reusable cell failed")
         }
         
-        guard indexPath.row < viewModel.products.count else {fatalError("Make sure this does not happen") }
+        guard indexPath.row < viewModel.products.count else { fatalError("Make sure this does not happen") }
         
         cell.configure(viewModel: ProductDetailViewModel(product: viewModel.products[indexPath.row]))
         

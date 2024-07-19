@@ -9,35 +9,53 @@ import Foundation
 import Combine
 import UIKit
 
-final class ProductsViewModel {
+protocol ProductsViewModelInterface {
+    // Inputs
+    var viewWillLayoutSubviewsSubject: PassthroughSubject<Void, Never> { get }
+    func fetchData()
+    
+    // Outputs
+    var productsPublisher: AnyPublisher<[ProductModel], Never> { get }
+    var products: [ProductModel] { get }
+    var errorPublisher: AnyPublisher<NetworkServiceError, Never> { get }
+    var viewWillLayoutSubviewsPublisher: AnyPublisher<Void, Never> { get }
+}
+
+final class ProductsViewModel: ProductsViewModelInterface {
     
     // MARK: - Properties
     
     private let networkService: NetworkServiceInterface
-    private let orientationService: DeviceOrientationServiceInterface
     
     private var cancellables = Set<AnyCancellable>()
     
     @Published var products = [ProductModel]()
-    @Published var error: NetworkServiceError?
-    @Published var deviceOrientation: UIDeviceOrientation = .unknown
+    var productsPublisher: AnyPublisher<[ProductModel], Never> {
+        $products.eraseToAnyPublisher()
+    }
+    
+    @Published private var error: NetworkServiceError?
+    var errorPublisher: AnyPublisher<NetworkServiceError, Never> {
+        $error
+            .compactMap({ $0 })
+            .eraseToAnyPublisher()
+    }
+    
+    var viewWillLayoutSubviewsSubject = PassthroughSubject<Void, Never>()
+    var viewWillLayoutSubviewsPublisher: AnyPublisher<Void, Never> {
+        return viewWillLayoutSubviewsSubject.eraseToAnyPublisher()
+    }
     
     // MARK: - Life Cycle
     
-    init(networkService: NetworkServiceInterface = NetworkService(), orientationService: DeviceOrientationServiceInterface = DeviceOrientationService.shared) {
+    init(networkService: NetworkServiceInterface = NetworkService()) {
         self.networkService = networkService
-        self.orientationService = orientationService
     }
     
     // MARK: - Business Logic
     
-    func start() {
-        
-        fetchData()
-    }
-    
     /// Use this method to fetch data and present the result in views.
-    private func fetchData() {
+    func fetchData() {
         
         networkService.fetchData()
             .receive(on: DispatchQueue.main)
@@ -52,12 +70,11 @@ final class ProductsViewModel {
                 self?.products = products
             }
             .store(in: &cancellables)
-        
-        orientationService.orientationPublisher
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] orientation in
-                self?.deviceOrientation = orientation
-            }
-            .store(in: &cancellables)
+    }
+    
+    func viewWillLayoutSubviews() {
+        print("viewWillLayoutSubviews")
+        // Do any work to filter changes.
+        viewWillLayoutSubviewsSubject.send()
     }
 }
