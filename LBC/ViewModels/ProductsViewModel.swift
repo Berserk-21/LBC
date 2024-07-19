@@ -11,13 +11,13 @@ import UIKit
 
 protocol ProductsViewModelInterface {
     // Inputs
-    var viewWillLayoutSubviewsSubject: PassthroughSubject<Void, Never> { get }
+    func viewWillLayoutSubviews()
     func fetchData()
     
     // Outputs
-    var productsPublisher: AnyPublisher<[ProductModel], Never> { get }
+    var didFetchDataPublisher: AnyPublisher<[ProductModel], Never> { get }
     var products: [ProductModel] { get }
-    var errorPublisher: AnyPublisher<NetworkServiceError, Never> { get }
+    var didFetchDataWithErrorPublisher: AnyPublisher<NetworkServiceError, Never> { get }
     var viewWillLayoutSubviewsPublisher: AnyPublisher<Void, Never> { get }
 }
 
@@ -30,12 +30,12 @@ final class ProductsViewModel: ProductsViewModelInterface {
     private var cancellables = Set<AnyCancellable>()
     
     @Published var products = [ProductModel]()
-    var productsPublisher: AnyPublisher<[ProductModel], Never> {
+    var didFetchDataPublisher: AnyPublisher<[ProductModel], Never> {
         $products.eraseToAnyPublisher()
     }
     
     @Published private var error: NetworkServiceError?
-    var errorPublisher: AnyPublisher<NetworkServiceError, Never> {
+    var didFetchDataWithErrorPublisher: AnyPublisher<NetworkServiceError, Never> {
         $error
             .compactMap({ $0 })
             .eraseToAnyPublisher()
@@ -73,7 +73,6 @@ final class ProductsViewModel: ProductsViewModelInterface {
     }
     
     func viewWillLayoutSubviews() {
-        print("viewWillLayoutSubviews")
         // Do any work to filter changes.
         viewWillLayoutSubviewsSubject.send()
     }

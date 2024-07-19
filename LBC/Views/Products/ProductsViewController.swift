@@ -61,7 +61,7 @@ final class ProductsViewController: UIViewController {
     /// Binds viewModel and Views.
     private func setupBindings() {
         
-        viewModel.errorPublisher
+        viewModel.didFetchDataWithErrorPublisher
             .receive(on: DispatchQueue.main)
             .compactMap({ $0 })
             .sink { [weak self] error in
@@ -73,7 +73,7 @@ final class ProductsViewController: UIViewController {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
-        viewModel.viewWillLayoutSubviewsSubject.send()
+        viewModel.viewWillLayoutSubviews()
     }
     
     private func start() {

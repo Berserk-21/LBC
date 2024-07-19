@@ -44,7 +44,7 @@ final class LBCTests: XCTestCase {
         
         let expectation = XCTestExpectation(description: "Successfully fetched categoryIds")
         
-        viewModel.productsPublisher
+        viewModel.didFetchDataPublisher
             .dropFirst()
             .sink { products in
                 XCTAssertEqual(products[0].categoryId, 4)
@@ -62,7 +62,7 @@ final class LBCTests: XCTestCase {
         
         let expectation = XCTestExpectation(description: "Successfully fetched data")
         
-        viewModel.productsPublisher
+        viewModel.didFetchDataPublisher
             .dropFirst()
             .sink { products in
                 XCTAssertEqual(products[0].category, "Maison")
@@ -80,7 +80,7 @@ final class LBCTests: XCTestCase {
         
         let expectation = XCTestExpectation(description: "Successfully fetched titles")
         
-        viewModel.productsPublisher
+        viewModel.didFetchDataPublisher
             .dropFirst()
             .sink { products in
                 XCTAssertEqual(products[0].title, "Statue homme noir assis en plâtre polychrome")
@@ -98,7 +98,7 @@ final class LBCTests: XCTestCase {
         
         let expectation = XCTestExpectation(description: "Successfully fetched descriptions")
         
-        viewModel.productsPublisher
+        viewModel.didFetchDataPublisher
             .dropFirst()
             .sink { products in
                 XCTAssertEqual(products[0].description, "Magnifique Statuette homme noir assis fumant le cigare en terre cuite et plâtre polychrome réalisée à la main.  Poids  1,900 kg en très bon état, aucun éclat  !  Hauteur 18 cm  Largeur : 16 cm Profondeur : 18cm  Création Jacky SAMSON  OPTIMUM  PARIS  Possibilité de remise sur place en gare de Fontainebleau ou Paris gare de Lyon, en espèces (heure et jour du rendez-vous au choix). Envoi possible ! Si cet article est toujours visible sur le site c'est qu'il est encore disponible")
@@ -116,7 +116,7 @@ final class LBCTests: XCTestCase {
         
         let expectation = XCTestExpectation(description: "Successfully fetched prices")
         
-        viewModel.productsPublisher
+        viewModel.didFetchDataPublisher
             .dropFirst()
             .sink { products in
                 XCTAssertEqual(products[0].price, 140.00)
@@ -134,7 +134,7 @@ final class LBCTests: XCTestCase {
         
         let expectation = XCTestExpectation(description: "Successfully fetched imagesUrl")
         
-        viewModel.productsPublisher
+        viewModel.didFetchDataPublisher
             .dropFirst()
             .sink { products in
                 XCTAssertEqual(products[0].imagesUrl.small, "https://raw.githubusercontent.com/leboncoin/paperclip/master/ad-small/2c9563bbe85f12a5dcaeb2c40989182463270404.jpg")
@@ -154,7 +154,7 @@ final class LBCTests: XCTestCase {
         
         let expectation = XCTestExpectation(description: "Successfully fetched creationDate")
         
-        viewModel.productsPublisher
+        viewModel.didFetchDataPublisher
             .dropFirst()
             .sink { products in
                 XCTAssertEqual(products[0].creationDate, "2019-11-05T15:56:59+0000")
@@ -172,7 +172,7 @@ final class LBCTests: XCTestCase {
         
         let expectation = XCTestExpectation(description: "Successfully fetched isUrgent")
         
-        viewModel.productsPublisher
+        viewModel.didFetchDataPublisher
             .dropFirst()
             .sink { products in
                 XCTAssertEqual(products[0].isUrgent, false)
@@ -190,7 +190,7 @@ final class LBCTests: XCTestCase {
         
         let expectation = XCTestExpectation(description: "Successfully fetched optional siret")
         
-        viewModel.productsPublisher
+        viewModel.didFetchDataPublisher
             .dropFirst()
             .sink { products in
                 XCTAssertEqual(products[0].siret, nil)

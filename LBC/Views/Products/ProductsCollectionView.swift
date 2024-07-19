@@ -40,7 +40,7 @@ final class ProductsCollectionView: UICollectionView {
     
     private func setupBindings() {
         
-        viewModel.productsPublisher
+        viewModel.didFetchDataPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] products in
                 self?.reloadData()
