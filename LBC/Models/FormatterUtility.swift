@@ -68,6 +68,8 @@ struct FormatterUtility {
             }
         case .unknown(let error):
             errorMessage = error.localizedDescription
+        case .cancelled:
+            errorMessage = "La requête est annulée."
         }
         
         return AlertErrorModel(title: title, message: errorMessage)

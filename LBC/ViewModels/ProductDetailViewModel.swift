@@ -29,8 +29,7 @@ final class ProductDetailViewModel: ProductDetailViewModelInterface {
     private var cancellables = Set<AnyCancellable>()
     
     private let product: ProductModel
-    private let imageDownloader: ImageDownloaderInterface
-    private let cacheService: CacheServiceInterface
+    private let fetchImageService: FetchImageInterface
     
     var title: String {
         return product.title
@@ -75,10 +74,9 @@ final class ProductDetailViewModel: ProductDetailViewModelInterface {
     
     // MARK: - Life Cycle
     
-    init(product: ProductModel, imageDownloader: ImageDownloader = ImageDownloader(), cacheService: CacheServiceInterface = CacheService.shared) {
+    init(product: ProductModel, imageDownloader: FetchImageInterface = FetchImageService()) {
         self.product = product
-        self.imageDownloader = imageDownloader
-        self.cacheService = cacheService
+        self.fetchImageService = imageDownloader
     }
     
     // MARK: - Fetch Data
@@ -86,18 +84,13 @@ final class ProductDetailViewModel: ProductDetailViewModelInterface {
     /// Uses this method to fetch the thumbnail Image reactively.
     func loadImage() {
         
-        guard let thumbUrlString = product.imagesUrl.thumb, let url = URL(string: thumbUrlString) else {
+        guard let thumbUrlString = product.imagesUrl.thumb else {
             imageData = nil
-            imageDataError = NetworkServiceError.invalidUrl
+            print("This product does not have a thumb image.")
             return
         }
         
-        if let cachedImageData = cacheService.image(forKey: thumbUrlString) {
-            self.imageData = cachedImageData
-            return
-        }
-        
-        imageDownloader.downloadImage(from: url)
+        fetchImageService.fetchImage(from: thumbUrlString)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 if case let .failure(error) = completion {
@@ -106,7 +99,6 @@ final class ProductDetailViewModel: ProductDetailViewModelInterface {
                 }
             }, receiveValue: { [weak self] data in
                 self?.imageData = data
-                self?.cacheService.setImage(data, forKey: thumbUrlString)
             })
             .store(in: &cancellables)
     }

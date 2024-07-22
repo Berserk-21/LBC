@@ -13,6 +13,7 @@ enum NetworkServiceError: Error {
     case invalidUrl
     case invalidResponse
     case requestFailed
+    case cancelled
     case decodingFailed
     case unknown(_: Error)
     case statusCode(_: Int)
