@@ -28,8 +28,7 @@ final class ProductDetailViewModel: ProductDetailViewModelInterface {
     private var cancellables = Set<AnyCancellable>()
     
     private let product: ProductModel
-    private let imageDownloader: ImageDownloader
-    private let urlSession: URLSession
+    private let imageDownloader: ImageDownloaderInterface
     
     var title: String {
         return product.title
@@ -92,14 +91,10 @@ final class ProductDetailViewModel: ProductDetailViewModelInterface {
         return $imageData.eraseToAnyPublisher()
     }
     
-    // Not using it because the quality is surprisingly worst than the thumbnail.
-//    @Published var smallImageData: Data?
-    
     // MARK: - Life Cycle
     
-    init(product: ProductModel, urlSession: URLSession = URLSession.shared, imageDownloader: ImageDownloader = ImageDownloader()) {
+    init(product: ProductModel, imageDownloader: ImageDownloader = ImageDownloader()) {
         self.product = product
-        self.urlSession = urlSession
         self.imageDownloader = imageDownloader
     }
     

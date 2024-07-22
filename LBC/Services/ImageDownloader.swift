@@ -8,13 +8,17 @@
 import Foundation
 import Combine
 
+protocol ImageDownloaderInterface {
+    func downloadImage(from url: URL) -> AnyPublisher<Data, ImageDownloadError>
+}
+
 enum ImageDownloadError: Error {
     case invalidResponse
     case statusCode(Int)
     case unknow(Error)
 }
 
-final class ImageDownloader {
+final class ImageDownloader: ImageDownloaderInterface {
     
     // MARK: - Properties
     
