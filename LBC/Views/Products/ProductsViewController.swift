@@ -26,8 +26,8 @@ final class ProductsViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init() {
-        self.viewModel = ProductsViewModel()
+    init(viewModel: ProductsViewModelInterface = ProductsViewModel()) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     

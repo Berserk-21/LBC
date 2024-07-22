@@ -15,8 +15,8 @@ protocol ProductsViewModelInterface {
     func fetchData()
     
     // Outputs
-    var didFetchDataPublisher: AnyPublisher<[ProductModel], Never> { get }
     var products: [ProductModel] { get }
+    var didFetchDataPublisher: AnyPublisher<[ProductModel], Never> { get }
     var didFetchDataWithErrorPublisher: AnyPublisher<NetworkServiceError, Never> { get }
     var viewWillLayoutSubviewsPublisher: AnyPublisher<Void, Never> { get }
 }
