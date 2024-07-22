@@ -38,7 +38,7 @@ final class ProductsViewModel: ProductsViewModelInterface {
     var didFetchDataWithErrorPublisher: AnyPublisher<AlertErrorModel, Never> {
         $error
             .compactMap({ $0 })
-            .map({ self.formatError($0) })
+            .map({ FormatterUtility.formatError($0) })
             .eraseToAnyPublisher()
     }
     
@@ -76,31 +76,5 @@ final class ProductsViewModel: ProductsViewModelInterface {
     func viewWillLayoutSubviews() {
         // Do any work to filter changes.
         viewWillLayoutSubviewsSubject.send()
-    }
-    
-    private func formatError(_ error: NetworkServiceError) -> AlertErrorModel {
-        
-        let title: String = "Le téléchargement de l'image a échoué."
-        let errorMessage: String
-        
-        // Improvements
-        // send error localized message to private analytics domain.
-        // error.localizedDescription
-        // Use localizable strings.
-        
-        switch error {
-        case .invalidUrl:
-            errorMessage = "L'url n'est pas valide."
-        case .invalidResponse:
-            errorMessage = "La réponse n'est pas valide."
-        case .decodingFailed:
-            errorMessage = "Le décodage des données a échoué"
-        case .requestFailed:
-            errorMessage = "La requête a échoué."
-        case .serverError:
-            errorMessage = "Le serveur a rencontré une erreur."
-        }
-        
-        return AlertErrorModel(title: title, message: errorMessage)
     }
 }

@@ -49,19 +49,15 @@ final class ProductDetailViewModel: ProductDetailViewModelInterface {
     }
     
     var price: String {
-        return formatPrice(from: product.price)
+        return FormatterUtility.formatPrice(from: product.price)
     }
     
     var date: String {
-        return formatDate(from: product.creationDate)
-    }
-    
-    private var formattedSiret: String? {
-        return formatSiret(from: product.siret)
+        return FormatterUtility.formatDateFrom(string: product.creationDate)
     }
     
     var siret: String? {
-        return formattedSiret
+        return FormatterUtility.formatSiret(from: product.siret)
     }
     
     @Published var imageData: Data?
@@ -69,11 +65,11 @@ final class ProductDetailViewModel: ProductDetailViewModelInterface {
         return $imageData.eraseToAnyPublisher()
     }
     
-    @Published var imageDataError: ImageDownloadError?
+    @Published var imageDataError: NetworkServiceError?
     var imageDataErrorPublisher: AnyPublisher<AlertErrorModel, Never> {
         return $imageDataError
             .compactMap({ $0 })
-            .map({ self.formatError($0) })
+            .map({ FormatterUtility.formatError($0) })
             .eraseToAnyPublisher()
     }
     
@@ -87,73 +83,12 @@ final class ProductDetailViewModel: ProductDetailViewModelInterface {
     
     // MARK: - Fetch Data
     
-    /// Use this method to reformat a date String.
-    private func formatDate(from: String) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        guard let date = dateFormatter.date(from: product.creationDate) else {
-            return product.creationDate
-        }
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .none
-        return dateFormatter.string(from: date)
-    }
-    
-    /// Use this method to format the siret String.
-    private func formatSiret(from siret: String?) -> String? {
-        
-        guard let siret = product.siret else {
-            return nil
-        }
-        
-        return "Siret: \(String(describing: siret))"
-    }
-    
-    /// Use this method to format price to a String.
-    private func formatPrice(from price: CGFloat) -> String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.currencyCode = Locale.current.currencyCode ?? "EUR"
-        
-        // Not selling free products here :p
-        guard product.price > 0.0, let stringPrice = formatter.string(from: NSNumber(floatLiteral: product.price)) else { return Constants.HomeCollectionViewCell.invalidPriceText }
-        return stringPrice
-    }
-    
-    /// Uses this method to format an Error to a String.
-    private func formatError(_ error: ImageDownloadError) -> AlertErrorModel {
-        
-        let title: String = "Le téléchargement de l'image a échoué."
-        let errorMessage: String
-        
-        switch error {
-        case .invalidUrl:
-            errorMessage = "L'url n'est pas valide."
-        case .invalidResponse:
-            errorMessage = "La réponse n'est pas valide."
-        case .statusCode(let statusCode):
-            switch statusCode {
-            case 400..<500:
-                errorMessage = "La requête n'est pas autorisée."
-            case 500..<600:
-                errorMessage = "Le serveur a rencontré une erreur."
-            default:
-                errorMessage = error.localizedDescription
-            }
-            
-        case .unknow(let error):
-            errorMessage = error.localizedDescription
-        }
-        
-        return AlertErrorModel(title: title, message: errorMessage)
-    }
-    
     /// Uses this method to fetch the thumbnail Image reactively.
     func loadImage() {
         
         guard let thumbUrlString = product.imagesUrl.thumb, let url = URL(string: thumbUrlString) else {
             imageData = nil
-            imageDataError = ImageDownloadError.invalidUrl
+            imageDataError = NetworkServiceError.invalidUrl
             return
         }
         

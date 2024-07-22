@@ -9,14 +9,7 @@ import Foundation
 import Combine
 
 protocol ImageDownloaderInterface {
-    func downloadImage(from url: URL) -> AnyPublisher<Data, ImageDownloadError>
-}
-
-enum ImageDownloadError: Error {
-    case invalidUrl
-    case invalidResponse
-    case statusCode(Int)
-    case unknow(Error)
+    func downloadImage(from url: URL) -> AnyPublisher<Data, NetworkServiceError>
 }
 
 final class ImageDownloader: ImageDownloaderInterface {
@@ -34,7 +27,7 @@ final class ImageDownloader: ImageDownloaderInterface {
     // MARK: - Core Methods
     
     /// Use this method to download image data from a URL.
-    func downloadImage(from url: URL) -> AnyPublisher<Data, ImageDownloadError> {
+    func downloadImage(from url: URL) -> AnyPublisher<Data, NetworkServiceError> {
 
         return session.dataTaskPublisher(for: url)
             .tryMap { data, response in
@@ -43,16 +36,16 @@ final class ImageDownloader: ImageDownloaderInterface {
                 }
                 
                 guard httpResponse.statusCode == 200 else {
-                    throw ImageDownloadError.statusCode(httpResponse.statusCode)
+                    throw NetworkServiceError.statusCode(httpResponse.statusCode)
                 }
 
                 return data
             }
-            .mapError({ error -> ImageDownloadError in
-                if let imageDownloadError = error as? ImageDownloadError {
+            .mapError({ error -> NetworkServiceError in
+                if let imageDownloadError = error as? NetworkServiceError {
                     return imageDownloadError
                 } else {
-                    return .unknow(error)
+                    return .unknown(error)
                 }
             })
             .eraseToAnyPublisher()

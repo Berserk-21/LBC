@@ -34,6 +34,7 @@
 		2C8C20E72C08D2DC00628BE2 /* URLProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8C20E62C08D2DC00628BE2 /* URLProtocolMock.swift */; };
 		2C8C20EB2C08D93900628BE2 /* itemProducts.json in Resources */ = {isa = PBXBuildFile; fileRef = 2C8C20EA2C08D93900628BE2 /* itemProducts.json */; };
 		2CD8EF2C2C4E58CA00944038 /* ErrorPresenterInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD8EF2B2C4E58CA00944038 /* ErrorPresenterInterface.swift */; };
+		2CD8EF4E2C4EB51200944038 /* FormatterUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD8EF4D2C4EB51200944038 /* FormatterUtility.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,7 @@
 		2C8C20E62C08D2DC00628BE2 /* URLProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLProtocolMock.swift; sourceTree = "<group>"; };
 		2C8C20EA2C08D93900628BE2 /* itemProducts.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = itemProducts.json; sourceTree = "<group>"; };
 		2CD8EF2B2C4E58CA00944038 /* ErrorPresenterInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorPresenterInterface.swift; sourceTree = "<group>"; };
+		2CD8EF4D2C4EB51200944038 /* FormatterUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterUtility.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +159,7 @@
 			children = (
 				2C2EE41A2C071C9900BDC1FD /* ProductModel.swift */,
 				2C2EE41C2C071CB500BDC1FD /* CategoryModel.swift */,
+				2CD8EF4D2C4EB51200944038 /* FormatterUtility.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -375,6 +378,7 @@
 				2C2EE4192C071C6C00BDC1FD /* ProductsViewModel.swift in Sources */,
 				2C2EE3E52C07164300BDC1FD /* ProductsViewController.swift in Sources */,
 				2C2EE4232C071D8200BDC1FD /* Constants.swift in Sources */,
+				2CD8EF4E2C4EB51200944038 /* FormatterUtility.swift in Sources */,
 				2C2EE41B2C071C9900BDC1FD /* ProductModel.swift in Sources */,
 				2C2EE3E12C07164300BDC1FD /* AppDelegate.swift in Sources */,
 				2C8C20D52C07727E00628BE2 /* ProductDetailViewModel.swift in Sources */,

@@ -12,9 +12,10 @@ enum NetworkServiceError: Error {
     
     case invalidUrl
     case invalidResponse
-    case serverError
     case requestFailed
     case decodingFailed
+    case unknown(_: Error)
+    case statusCode(_: Int)
 }
 
 protocol NetworkServiceInterface {
@@ -41,7 +42,7 @@ struct NetworkService: NetworkServiceInterface {
                 }
                 
                 guard (200...299).contains(httpResponse.statusCode) else {
-                    throw NetworkServiceError.serverError
+                    throw NetworkServiceError.statusCode(httpResponse.statusCode)
                 }
                 
                 return result.data
