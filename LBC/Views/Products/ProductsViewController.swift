@@ -61,14 +61,7 @@ final class ProductsViewController: UIViewController {
     /// Binds viewModel and Views.
     private func setupBindings() {
         
-        viewModel.didFetchDataWithErrorPublisher
-            .receive(on: DispatchQueue.main)
-            .compactMap({ $0 })
-            .sink { [weak self] error in
-                guard let self = self else { return }
-                self.presentError(error, on: self)
-            }
-            .store(in: &cancellables)
+        setupErrorBinding()
     }
     
     override func viewWillLayoutSubviews() {
@@ -102,6 +95,22 @@ extension ProductsViewController: ProductsCollectionViewDelegate {
         
         let detailVC = ProductDetailViewController(viewModel: ProductDetailViewModel(product: viewModel.products[indexPath.row]))
         navigationController?.pushViewController(detailVC, animated: true)
+    }
+}
+
+// MARK: - Reactive Bindings
+
+extension ProductsViewController {
+    
+    private func setupErrorBinding() {
+        viewModel.didFetchDataWithErrorPublisher
+            .receive(on: DispatchQueue.main)
+            .compactMap({ $0 })
+            .sink { [weak self] error in
+                guard let self = self else { return }
+                self.presentError(error, on: self)
+            }
+            .store(in: &cancellables)
     }
 }
 
