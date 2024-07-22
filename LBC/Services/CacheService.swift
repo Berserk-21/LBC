@@ -7,9 +7,14 @@
 
 import UIKit
 
-final class ImageCache {
+protocol CacheServiceInterface {
+    func image(forKey key: String) -> Data?
+    func setImage(_ data: Data, forKey key: String)
+}
+
+final class CacheService: CacheServiceInterface {
     
-    static let shared = ImageCache()
+    static let shared = CacheService()
     
     private init() {}
     

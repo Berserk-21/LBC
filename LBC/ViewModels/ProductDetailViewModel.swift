@@ -30,6 +30,7 @@ final class ProductDetailViewModel: ProductDetailViewModelInterface {
     
     private let product: ProductModel
     private let imageDownloader: ImageDownloaderInterface
+    private let cacheService: CacheServiceInterface
     
     var title: String {
         return product.title
@@ -78,9 +79,10 @@ final class ProductDetailViewModel: ProductDetailViewModelInterface {
     
     // MARK: - Life Cycle
     
-    init(product: ProductModel, imageDownloader: ImageDownloader = ImageDownloader()) {
+    init(product: ProductModel, imageDownloader: ImageDownloader = ImageDownloader(), cacheService: CacheServiceInterface = CacheService.shared) {
         self.product = product
         self.imageDownloader = imageDownloader
+        self.cacheService = cacheService
     }
     
     // MARK: - Fetch Data
@@ -155,7 +157,7 @@ final class ProductDetailViewModel: ProductDetailViewModelInterface {
             return
         }
         
-        if let cachedImageData = ImageCache.shared.image(forKey: thumbUrlString) {
+        if let cachedImageData = cacheService.image(forKey: thumbUrlString) {
             self.imageData = cachedImageData
             return
         }
@@ -169,7 +171,7 @@ final class ProductDetailViewModel: ProductDetailViewModelInterface {
                 }
             }, receiveValue: { [weak self] data in
                 self?.imageData = data
-                ImageCache.shared.setImage(data, forKey: thumbUrlString)
+                CacheService.shared.setImage(data, forKey: thumbUrlString)
             })
             .store(in: &cancellables)
     }
