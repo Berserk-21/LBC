@@ -60,11 +60,7 @@ final class FetchImageService: FetchImageInterface {
                 return data
             }
             .mapError({ error -> NetworkServiceError in
-                if let networkServiceError = error as? NetworkServiceError {
-                    return networkServiceError
-                } else {
-                    return .unknown(error)
-                }
+                return error as? NetworkServiceError ?? .unknown(error)
             })
             .eraseToAnyPublisher()
     }
