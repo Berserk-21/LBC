@@ -65,7 +65,8 @@ final class ProductsViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .compactMap({ $0 })
             .sink { [weak self] error in
-                self?.presentAlert(with: error)
+                guard let self = self else { return }
+                self.presentError(error, on: self)
             }
             .store(in: &cancellables)
     }
