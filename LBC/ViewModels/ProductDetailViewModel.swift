@@ -17,6 +17,7 @@ protocol ProductDetailViewModelInterface {
     var isUrgent: Bool { get }
     var siret: String? { get }
     var imageDataPublisher: AnyPublisher<Data?, Never> { get }
+    var imageDataErrorPublisher: AnyPublisher<Error, Never> { get }
     
     func loadImage()
 }
@@ -67,6 +68,13 @@ final class ProductDetailViewModel: ProductDetailViewModelInterface {
         return $imageData.eraseToAnyPublisher()
     }
     
+    @Published var imageDataError: Error?
+    var imageDataErrorPublisher: AnyPublisher<Error, Never> {
+        return $imageDataError
+            .compactMap({ $0 })
+            .eraseToAnyPublisher()
+    }
+    
     // MARK: - Life Cycle
     
     init(product: ProductModel, imageDownloader: ImageDownloader = ImageDownloader()) {
@@ -114,6 +122,7 @@ final class ProductDetailViewModel: ProductDetailViewModelInterface {
         
         guard let thumbUrlString = product.imagesUrl.thumb, let url = URL(string: thumbUrlString) else {
             imageData = nil
+            imageDataError = ImageDownloadError.invalidUrl
             return
         }
         
@@ -124,9 +133,10 @@ final class ProductDetailViewModel: ProductDetailViewModelInterface {
         
         imageDownloader.downloadImage(from: url)
             .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completion in
+            .sink(receiveCompletion: { [weak self] completion in
                 if case let .failure(error) = completion {
-                    print("Failed to download image for \(url): ",error)
+                    self?.imageDataError = error
+                    self?.imageData = nil
                 }
             }, receiveValue: { [weak self] data in
                 self?.imageData = data

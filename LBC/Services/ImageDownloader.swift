@@ -13,6 +13,7 @@ protocol ImageDownloaderInterface {
 }
 
 enum ImageDownloadError: Error {
+    case invalidUrl
     case invalidResponse
     case statusCode(Int)
     case unknow(Error)

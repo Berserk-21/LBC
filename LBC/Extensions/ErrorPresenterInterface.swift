@@ -7,11 +7,11 @@
 
 import UIKit
 
-protocol ErrorPresenter {
+protocol ErrorPresenterInterface {
     func presentError(_ error: Error, on viewController: UIViewController)
 }
 
-extension ErrorPresenter {
+extension ErrorPresenterInterface {
     func presentError(_ error: Error, on viewController: UIViewController) {
         let title: String = Constants.ProductViewController.Alert.errorTitle
         let message: String = Constants.ProductViewController.Alert.errorMessage

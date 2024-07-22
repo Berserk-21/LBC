@@ -33,7 +33,7 @@
 		2C8C20E52C08CF8200628BE2 /* ItemViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8C20E42C08CF8200628BE2 /* ItemViewModelTests.swift */; };
 		2C8C20E72C08D2DC00628BE2 /* URLProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8C20E62C08D2DC00628BE2 /* URLProtocolMock.swift */; };
 		2C8C20EB2C08D93900628BE2 /* itemProducts.json in Resources */ = {isa = PBXBuildFile; fileRef = 2C8C20EA2C08D93900628BE2 /* itemProducts.json */; };
-		2CD8EF2C2C4E58CA00944038 /* ErrorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD8EF2B2C4E58CA00944038 /* ErrorPresenter.swift */; };
+		2CD8EF2C2C4E58CA00944038 /* ErrorPresenterInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD8EF2B2C4E58CA00944038 /* ErrorPresenterInterface.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,7 +76,7 @@
 		2C8C20E42C08CF8200628BE2 /* ItemViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemViewModelTests.swift; sourceTree = "<group>"; };
 		2C8C20E62C08D2DC00628BE2 /* URLProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLProtocolMock.swift; sourceTree = "<group>"; };
 		2C8C20EA2C08D93900628BE2 /* itemProducts.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = itemProducts.json; sourceTree = "<group>"; };
-		2CD8EF2B2C4E58CA00944038 /* ErrorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorPresenter.swift; sourceTree = "<group>"; };
+		2CD8EF2B2C4E58CA00944038 /* ErrorPresenterInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorPresenterInterface.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -211,7 +211,7 @@
 			isa = PBXGroup;
 			children = (
 				2C2EE4282C07252200BDC1FD /* Anchors.swift */,
-				2CD8EF2B2C4E58CA00944038 /* ErrorPresenter.swift */,
+				2CD8EF2B2C4E58CA00944038 /* ErrorPresenterInterface.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -366,7 +366,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C2EE4262C071DE000BDC1FD /* NetworkService.swift in Sources */,
-				2CD8EF2C2C4E58CA00944038 /* ErrorPresenter.swift in Sources */,
+				2CD8EF2C2C4E58CA00944038 /* ErrorPresenterInterface.swift in Sources */,
 				2C22AC412C492033008B3FDA /* ImageDownloader.swift in Sources */,
 				2C2EE4172C071C4A00BDC1FD /* ProductsCollectionViewCell.swift in Sources */,
 				2C2EE4292C07252200BDC1FD /* Anchors.swift in Sources */,

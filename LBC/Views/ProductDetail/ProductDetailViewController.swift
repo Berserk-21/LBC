@@ -175,13 +175,24 @@ final class ProductDetailViewController: UIViewController {
         viewModel.loadImage()
     }
     
+    // MARK: - Setup Bindings
+    
     private func setupBindings() {
         
         viewModel.imageDataPublisher
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] data in
                 if let imageData = data, let image = UIImage(data: imageData) {
                     self?.productImageView.image = image
                 }
+            }
+            .store(in: &cancellables)
+        
+        viewModel.imageDataErrorPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] error in
+                guard let self = self else { return }
+                self.presentError(error, on: self)
             }
             .store(in: &cancellables)
     }
@@ -287,4 +298,10 @@ final class ProductDetailViewController: UIViewController {
         siretLabel.text = viewModel.siret
         siretLabel.isHidden = viewModel.siret == nil
     }
+}
+
+// MARK: - Error Handling
+
+extension ProductDetailViewController: ErrorPresenterInterface {
+    // Override to customize.
 }

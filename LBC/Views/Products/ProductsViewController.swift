@@ -116,7 +116,7 @@ extension ProductsViewController {
 
 // MARK: - ErrorPresenter
 
-extension ProductsViewController: ErrorPresenter {
+extension ProductsViewController: ErrorPresenterInterface {
     // Override method for customizations
 }
 
