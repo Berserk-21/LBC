@@ -8,7 +8,20 @@
 import Foundation
 import Combine
 
-final class ProductDetailViewModel {
+protocol ProductDetailViewModelInterface {
+    var title: String { get }
+    var category: String? { get }
+    var description: String { get }
+    var date: String { get }
+    var price: String { get }
+    var isUrgent: Bool { get }
+    var siret: String? { get }
+    var imageDataPublisher: AnyPublisher<Data?, Never> { get }
+    
+    func loadImage()
+}
+
+final class ProductDetailViewModel: ProductDetailViewModelInterface {
     
     // MARK: - Properties
     
@@ -17,27 +30,6 @@ final class ProductDetailViewModel {
     private let product: ProductModel
     private let imageDownloader: ImageDownloader
     private let urlSession: URLSession
-    
-    var formattedPrice: String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.currencyCode = Locale.current.currencyCode ?? "EUR"
-        
-        // Not selling free products here :p
-        guard product.price > 0.0, let stringPrice = formatter.string(from: NSNumber(floatLiteral: product.price)) else { return Constants.HomeCollectionViewCell.invalidPriceText }
-        return stringPrice
-    }
-    
-    var formattedDate: String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        guard let date = dateFormatter.date(from: product.creationDate) else {
-            return product.creationDate
-        }
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .none
-        return dateFormatter.string(from: date)
-    }
     
     var title: String {
         return product.title
@@ -55,18 +47,50 @@ final class ProductDetailViewModel {
         return product.description
     }
     
-    var formattedSiret: String? {
+    private var formattedPrice: String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencyCode = Locale.current.currencyCode ?? "EUR"
+        
+        // Not selling free products here :p
+        guard product.price > 0.0, let stringPrice = formatter.string(from: NSNumber(floatLiteral: product.price)) else { return Constants.HomeCollectionViewCell.invalidPriceText }
+        return stringPrice
+    }
+    
+    var price: String {
+        return formattedPrice
+    }
+    
+    private var formattedDate: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        guard let date = dateFormatter.date(from: product.creationDate) else {
+            return product.creationDate
+        }
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .none
+        return dateFormatter.string(from: date)
+    }
+    
+    var date: String {
+        return formattedDate
+    }
+    
+    private var formattedSiret: String? {
         if let siret = product.siret {
             return "Siret: \(String(describing: siret))"
         }
         return nil
     }
     
-    var thumbImageUrlString: String? {
-        return product.imagesUrl.thumb
+    var siret: String? {
+        return formattedSiret
     }
     
     @Published var imageData: Data?
+    var imageDataPublisher: AnyPublisher<Data?, Never> {
+        return $imageData.eraseToAnyPublisher()
+    }
     
     // Not using it because the quality is surprisingly worst than the thumbnail.
 //    @Published var smallImageData: Data?
@@ -84,7 +108,7 @@ final class ProductDetailViewModel {
     /// Uses this method to fetch the thumbnail Image reactively.
     func loadImage() {
         
-        guard let thumbUrlString = thumbImageUrlString, let url = URL(string: thumbUrlString) else {
+        guard let thumbUrlString = product.imagesUrl.thumb, let url = URL(string: thumbUrlString) else {
             imageData = nil
             return
         }
@@ -105,18 +129,5 @@ final class ProductDetailViewModel {
                 ImageCache.shared.setImage(data, forKey: thumbUrlString)
             })
             .store(in: &cancellables)
-        
-//        URLSession.shared.dataTaskPublisher(for: url)
-//            .map{ $0.data }
-//            .handleEvents(receiveOutput: { output in
-//                if let unwrappedData = output {
-//                    ImageCache.shared.setImage(unwrappedData, forKey: thumbUrlString)
-//                }
-//            })
-//            .replaceError(with: nil)
-//            .subscribe(on: DispatchQueue.global(qos: .background))
-//            .receive(on: DispatchQueue.main)
-//            .assign(to: \.imageData, on: self)
-//            .store(in: &cancellables)
     }
 }

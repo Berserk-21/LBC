@@ -12,7 +12,7 @@ final class ProductDetailViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let viewModel: ProductDetailViewModel
+    private let viewModel: ProductDetailViewModelInterface
     private var cancellables = Set<AnyCancellable>()
     
     private let scrollView: UIScrollView = {
@@ -134,19 +134,37 @@ final class ProductDetailViewController: UIViewController {
     override func loadView() {
         super.loadView()
         
-        setupConstraints()
+        setupViews()
         setupLayout()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupBindings()
+        start()
+    }
+    
+    func start() {
+        
+        viewModel.loadImage()
+    }
+    
+    private func setupBindings() {
+        
+        viewModel.imageDataPublisher
+            .sink { [weak self] data in
+                if let imageData = data, let image = UIImage(data: imageData) {
+                    self?.productImageView.image = image
+                }
+            }
+            .store(in: &cancellables)
     }
     
     // MARK: - Setup Views
     
     /// Adds views to hierarchy, creates and activates constraints.
-    private func setupConstraints() {
+    private func setupViews() {
         
         var constraints = [NSLayoutConstraint]()
         
@@ -208,26 +226,16 @@ final class ProductDetailViewController: UIViewController {
         view.backgroundColor = .white
         
         titleLabel.text = viewModel.title
-        priceLabel.text = viewModel.formattedPrice
+        priceLabel.text = viewModel.price
         descriptionLabel.text = viewModel.description
         categoryLabel.text = viewModel.category
-        creationDateLabel.text = viewModel.formattedDate
+        creationDateLabel.text = viewModel.date
         
         isUrgentLabel.text = viewModel.isUrgent ? "URGENT" : nil
         isUrgentLabel.isHidden = !viewModel.isUrgent
         verticalSeparator.isHidden = isUrgentLabel.isHidden
         
-        siretLabel.text = viewModel.formattedSiret
-        siretLabel.isHidden = viewModel.formattedSiret == nil
-        
-        viewModel.$imageData
-            .sink { [weak self] data in
-                if let imageData = data, let image = UIImage(data: imageData) {
-                    self?.productImageView.image = image
-                }
-            }
-            .store(in: &cancellables)
-        
-        viewModel.loadImage()
+        siretLabel.text = viewModel.siret
+        siretLabel.isHidden = viewModel.siret == nil
     }
 }
