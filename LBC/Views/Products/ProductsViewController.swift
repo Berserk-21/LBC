@@ -89,13 +89,6 @@ final class ProductsViewController: UIViewController {
         
         NSLayoutConstraint.activate(collectionViewConstraints)
     }
-    
-    func presentAlert(with error: NetworkServiceError) {
-        
-        let alertController = UIAlertController(title: Constants.ProductViewController.Alert.errorTitle, message: Constants.ProductViewController.Alert.errorMessage, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: Constants.ProductViewController.Alert.okTitle, style: .default))
-        present(alertController, animated: true)
-    }
 }
 
 // MARK: - ProductsCollectionViewDelegate
@@ -110,3 +103,11 @@ extension ProductsViewController: ProductsCollectionViewDelegate {
         navigationController?.pushViewController(detailVC, animated: true)
     }
 }
+
+// MARK: - ErrorPresenter
+
+extension ProductsViewController: ErrorPresenter {
+    // Override method for customizations
+}
+
+// Vérifier que les objets qui héritent d'un protocol utilisent toutes ses méthodes/propriétés.
