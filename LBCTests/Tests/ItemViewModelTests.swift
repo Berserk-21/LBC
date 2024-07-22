@@ -14,6 +14,8 @@ final class ItemViewModelTests: XCTestCase {
     var itemViewModels: [ProductDetailViewModel]!
     var cancellables = Set<AnyCancellable>()
     var session: URLSession!
+    
+    var fetchImageService: FetchImageServiceInterface!
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -24,7 +26,9 @@ final class ItemViewModelTests: XCTestCase {
         let config = URLSessionConfiguration.ephemeral
         config.protocolClasses = [URLProtocolMock.self]
         session = URLSession(configuration: config)
-        itemViewModels = [ProductDetailViewModel(product: products[0], urlSession: session), ProductDetailViewModel(product: products[1])]
+        fetchImageService = FetchImageService(session: session)
+        
+        itemViewModels = [ProductDetailViewModel(product: products[0]), ProductDetailViewModel(product: products[1])]
     }
 
     override func tearDownWithError() throws {
@@ -33,12 +37,12 @@ final class ItemViewModelTests: XCTestCase {
     }
 
     func testFormattedPrice() {
-        XCTAssertEqual(itemViewModels[0].formattedPrice, "€140,00")
-        XCTAssertEqual(itemViewModels[1].formattedPrice, Constants.HomeCollectionViewCell.invalidPriceText)
+        XCTAssertEqual(itemViewModels[0].price, "€140,00")
+        XCTAssertEqual(itemViewModels[1].price, Constants.HomeCollectionViewCell.invalidPriceText)
     }
     
     func testFormattedDate() {
-        XCTAssertEqual(itemViewModels[0].formattedDate, "5 Nov 2019")
+        XCTAssertEqual(itemViewModels[0].date, "5 Nov 2019")
     }
     
     func testTitle() {
@@ -60,20 +64,20 @@ final class ItemViewModelTests: XCTestCase {
     }
     
     func testSiret() {
-        XCTAssertEqual(itemViewModels[0].formattedSiret!, "Siret: 3549394390")
-        XCTAssertNil(itemViewModels[1].formattedSiret)
+        XCTAssertEqual(itemViewModels[0].siret!, "Siret: 3549394390")
+        XCTAssertNil(itemViewModels[1].siret)
     }
     
     func testImagesUrl() {
-        XCTAssertEqual(itemViewModels[0].thumbImageUrlString, "https://raw.githubusercontent.com/leboncoin/paperclip/master/ad-thumb/2c9563bbe85f12a5dcaeb2c40989182463270404.jpg")
-        XCTAssertNil(itemViewModels[1].thumbImageUrlString)
+        XCTAssertEqual(itemViewModels[0].imageUrlString, "https://raw.githubusercontent.com/leboncoin/paperclip/master/ad-thumb/2c9563bbe85f12a5dcaeb2c40989182463270404.jpg")
+        XCTAssertNil(itemViewModels[1].imageUrlString)
     }
     
     func testLoadImage() {
         
         let expectation = self.expectation(description: "Successfully fetched image")
         
-        let imageUrl = URL(string: itemViewModels[0].thumbImageUrlString!)
+        let imageUrl = URL(string: itemViewModels[0].imageUrlString!)
         let testImageData = (UIImage(named: "thumb_test")?.pngData())!
         
         URLProtocolMock.testURLs = [imageUrl: testImageData]
@@ -99,7 +103,7 @@ final class ItemViewModelTests: XCTestCase {
     
     func testStaticResponse() {
         
-        let url = URL(string: itemViewModels[0].thumbImageUrlString!)!
+        let url = URL(string: itemViewModels[0].imageUrlString!)!
         let testImageData = (UIImage(named: "thumb_test")?.pngData())!
         
         URLProtocolMock.testURLs[url] = testImageData
@@ -125,11 +129,10 @@ final class ItemViewModelTests: XCTestCase {
         XCTAssertEqual(testImageData, receivedData)
     }
     
-    var imageDownloader: ImageDownloader!
-
     func testImageDownload() {
         
-        let url = URL(string: itemViewModels[0].thumbImageUrlString!)!
+        let urlString = itemViewModels[0].imageUrlString!
+
         let bundle = Bundle(for: type(of: self))
         guard let url = bundle.url(forResource: "thumb_test", withExtension: "jpeg"), let expectedData = try? Data(contentsOf: url) else {
             XCTFail("Failed to load image from bundle")
@@ -142,8 +145,7 @@ final class ItemViewModelTests: XCTestCase {
         var receivedData: Data?
         var responseError: Error?
         
-        imageDownloader = ImageDownloader(session: session)
-        imageDownloader.downloadImage(from: url)
+        fetchImageService.fetchImage(from: urlString)
             .sink { completion in
                 switch completion {
                 case .failure(let error):

@@ -29,7 +29,7 @@ final class ProductDetailViewModel: ProductDetailViewModelInterface {
     private var cancellables = Set<AnyCancellable>()
     
     private let product: ProductModel
-    private let fetchImageService: FetchImageInterface
+    private let fetchImageService: FetchImageServiceInterface
     
     var title: String {
         return product.title
@@ -59,6 +59,10 @@ final class ProductDetailViewModel: ProductDetailViewModelInterface {
         return FormatterUtility.formatSiret(from: product.siret)
     }
     
+    var imageUrlString: String? {
+        return product.imagesUrl.thumb
+    }
+    
     @Published var imageData: Data?
     var imageDataPublisher: AnyPublisher<Data?, Never> {
         return $imageData.eraseToAnyPublisher()
@@ -74,7 +78,7 @@ final class ProductDetailViewModel: ProductDetailViewModelInterface {
     
     // MARK: - Life Cycle
     
-    init(product: ProductModel, imageDownloader: FetchImageInterface = FetchImageService()) {
+    init(product: ProductModel, imageDownloader: FetchImageServiceInterface = FetchImageService()) {
         self.product = product
         self.fetchImageService = imageDownloader
     }
@@ -84,7 +88,7 @@ final class ProductDetailViewModel: ProductDetailViewModelInterface {
     /// Uses this method to fetch the thumbnail Image reactively.
     func loadImage() {
         
-        guard let thumbUrlString = product.imagesUrl.thumb else {
+        guard let thumbUrlString = imageUrlString else {
             imageData = nil
             print("This product does not have a thumb image.")
             return

@@ -8,11 +8,11 @@
 import Foundation
 import Combine
 
-protocol FetchImageInterface {
+protocol FetchImageServiceInterface {
     func fetchImage(from urlString: String) -> AnyPublisher<Data, NetworkServiceError>
 }
 
-final class FetchImageService: FetchImageInterface {
+final class FetchImageService: FetchImageServiceInterface {
     
     // MARK: - Properties
     

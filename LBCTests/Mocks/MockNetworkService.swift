@@ -19,14 +19,14 @@ class MockNetworkService: NetworkServiceInterface {
         let categories = categoriesPublisher
             .decode(type: [CategoryModel].self, decoder: JSONDecoder())
             .mapError { error -> NetworkServiceError in
-                return NetworkServiceError.decodingFailed(error)
+                return NetworkServiceError.decodingFailed
             }
             .eraseToAnyPublisher()
         
         let products = productsPublisher
             .decode(type: [ProductModel].self, decoder: JSONDecoder())
             .mapError { error -> NetworkServiceError in
-                return NetworkServiceError.decodingFailed(error)
+                return NetworkServiceError.decodingFailed
             }
             .eraseToAnyPublisher()
         
