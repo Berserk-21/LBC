@@ -139,9 +139,9 @@ final class ProductsCollectionViewCell: UICollectionViewCell {
         self.viewModel = viewModel
                         
         titleLabel.text = viewModel.title
-        priceLabel.text = viewModel.formattedPrice
+        priceLabel.text = viewModel.price
         categoryLabel.text = viewModel.category
-        creationDateLabel.text = viewModel.formattedDate
+        creationDateLabel.text = viewModel.date
         isUrgentBackgroundView.isHidden = !viewModel.isUrgent
         
         viewModel.$imageData

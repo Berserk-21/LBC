@@ -94,6 +94,28 @@ final class ProductDetailViewController: UIViewController {
         return label
     }()
     
+    private lazy var topRightStackView: UIStackView = {
+        let sv = UIStackView()
+        sv.axis = .vertical
+        sv.spacing = stackViewSpacing
+        return sv
+    }()
+    
+    private lazy var dateUrgencyStackView: UIStackView = {
+        let sv = UIStackView()
+        sv.axis = .horizontal
+        sv.spacing = stackViewSpacing
+        return sv
+    }()
+    
+    
+    private lazy var bottomStackView: UIStackView = {
+        let sv = UIStackView()
+        sv.axis = .vertical
+        sv.spacing = stackViewSpacing
+        return sv
+    }()
+    
     private lazy var buyButton: UIButton = {
         let button = UIButton()
         // Cheat with some empty spaces to help self sizing width.
@@ -110,6 +132,8 @@ final class ProductDetailViewController: UIViewController {
         let label = UILabel()
         label.text = Constants.ProductDetailViewController.comingSoon
         label.font = UIFont.systemFont(ofSize: 12.0, weight: .light)
+        label.textAlignment = .right
+        label.numberOfLines = 0
         return label
     }()
     
@@ -134,8 +158,9 @@ final class ProductDetailViewController: UIViewController {
     override func loadView() {
         super.loadView()
         
-        setupViews()
+        setupViewsHierarchy()
         setupLayout()
+        setupConstraints()
     }
     
     override func viewDidLoad() {
@@ -163,61 +188,85 @@ final class ProductDetailViewController: UIViewController {
     
     // MARK: - Setup Views
     
-    /// Adds views to hierarchy, creates and activates constraints.
-    private func setupViews() {
+    /// Creates and activates views constraints.
+    private func setupConstraints() {
         
-        var constraints = [NSLayoutConstraint]()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        productImageView.translatesAutoresizingMaskIntoConstraints = false
+        topRightStackView.translatesAutoresizingMaskIntoConstraints = false
+        verticalSeparator.translatesAutoresizingMaskIntoConstraints = false
+        bottomStackView.translatesAutoresizingMaskIntoConstraints = false
+        buyButton.translatesAutoresizingMaskIntoConstraints = false
+        comingSoonLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        // ScrollView
+        NSLayoutConstraint.activate([
+            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            
+            containerView.leadingAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.leadingAnchor),
+            containerView.topAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.topAnchor),
+            containerView.trailingAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.trailingAnchor),
+            containerView.bottomAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.bottomAnchor),
+            containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            
+            productImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: sidePadding),
+            productImageView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: sidePadding),
+            productImageView.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: imageViewWidthMultiplier),
+            productImageView.heightAnchor.constraint(equalTo: productImageView.widthAnchor),
+            
+            topRightStackView.leadingAnchor.constraint(equalTo: productImageView.trailingAnchor, constant: sidePadding),
+            topRightStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -sidePadding),
+            topRightStackView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: sidePadding),
+            topRightStackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -sidePadding),
+            
+            verticalSeparator.widthAnchor.constraint(equalToConstant: 1.0),
+            
+            bottomStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: sidePadding),
+            bottomStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -sidePadding),
+            bottomStackView.topAnchor.constraint(equalTo: productImageView.bottomAnchor, constant: sidePadding),
+            
+            buyButton.topAnchor.constraint(equalTo: bottomStackView.bottomAnchor, constant: sidePadding*2),
+            buyButton.bottomAnchor.constraint(lessThanOrEqualTo: containerView.bottomAnchor, constant: -sidePadding*2),
+            buyButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            buyButton.heightAnchor.constraint(equalToConstant: buttonHeight),
+            
+            comingSoonLabel.trailingAnchor.constraint(equalTo: buyButton.trailingAnchor),
+            comingSoonLabel.leadingAnchor.constraint(equalTo: buyButton.leadingAnchor),
+            comingSoonLabel.topAnchor.constraint(equalTo: buyButton.bottomAnchor)
+        ])
+    }
+    
+    /// Adds views to hierarchy.
+    private func setupViewsHierarchy() {
+        
         view.addSubview(scrollView)
-        constraints.append(contentsOf: scrollView.anchors(leading: view.safeAreaLayoutGuide.leadingAnchor, trailing: view.safeAreaLayoutGuide.trailingAnchor, top: view.safeAreaLayoutGuide.topAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor))
-        
-        // ContainerView
         scrollView.addSubview(containerView)
-        constraints.append(contentsOf: containerView.anchors(leading: scrollView.leadingAnchor, trailing: scrollView.trailingAnchor, top: scrollView.topAnchor, bottom: scrollView.bottomAnchor))
-        constraints.append(containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor))
         
-        // SmallImageView
         containerView.addSubview(productImageView)
-        constraints.append(contentsOf: productImageView.anchors(leading: containerView.leadingAnchor, leadingConstant: sidePadding, trailing: nil, top: containerView.topAnchor, bottom: nil))
-        constraints.append(productImageView.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: imageViewWidthMultiplier))
-        constraints.append(productImageView.heightAnchor.constraint(equalTo: productImageView.widthAnchor, multiplier: 1.0))
-        
-        // TopRight StackView
-        let topRightStackView = UIStackView(arrangedSubviews: [titleLabel, priceLabel, categoryLabel, UIView()])
-        topRightStackView.axis = .vertical
-        topRightStackView.spacing = 8.0
-        
         containerView.addSubview(topRightStackView)
-        constraints.append(contentsOf: topRightStackView.anchors(leading: productImageView.trailingAnchor, leadingConstant: sidePadding, trailing: containerView.trailingAnchor, trailingConstant: -sidePadding, top: containerView.topAnchor, topConstant: sidePadding, bottom: productImageView.bottomAnchor, bottomConstant: -sidePadding))
+        containerView.addSubview(bottomStackView)
+        containerView.addSubview(buyButton)
+        containerView.addSubview(comingSoonLabel)
         
-        // Vertical Separator
-        constraints.append(verticalSeparator.widthAnchor.constraint(equalToConstant: 1.0))
+        // Top Right StackView
+        topRightStackView.addArrangedSubview(titleLabel)
+        topRightStackView.addArrangedSubview(priceLabel)
+        topRightStackView.addArrangedSubview(categoryLabel)
+        topRightStackView.addArrangedSubview(UIView())
+        
+        // Date Urgency StackView
+        dateUrgencyStackView.addArrangedSubview(creationDateLabel)
+        dateUrgencyStackView.addArrangedSubview(verticalSeparator)
+        dateUrgencyStackView.addArrangedSubview(isUrgentLabel)
+        dateUrgencyStackView.addArrangedSubview(UIView())
         
         // Bottom StackView
-        let dateUrgencyStackView = UIStackView(arrangedSubviews: [creationDateLabel, verticalSeparator, isUrgentLabel, UIView()])
-        dateUrgencyStackView.axis = .horizontal
-        dateUrgencyStackView.spacing = stackViewSpacing
-        
-        let bottomStackView = UIStackView(arrangedSubviews: [descriptionLabel, dateUrgencyStackView, siretLabel])
-        bottomStackView.axis = .vertical
-        bottomStackView.spacing = stackViewSpacing
-        containerView.addSubview(bottomStackView)
-        
-        constraints.append(contentsOf: bottomStackView.anchors(leading: containerView.leadingAnchor, leadingConstant: sidePadding, trailing: containerView.trailingAnchor, trailingConstant: -sidePadding, top: productImageView.bottomAnchor, topConstant: sidePadding, bottom: nil))
-        
-        // Buy button
-        containerView.addSubview(buyButton)
-        constraints.append(contentsOf: buyButton.anchors(leading: nil, trailing: nil, top: bottomStackView.bottomAnchor, topConstant: sidePadding*2, bottom: nil))
-        constraints.append(buyButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor))
-        constraints.append(buyButton.heightAnchor.constraint(equalToConstant: buttonHeight))
-        
-        // Coming soon label
-        containerView.addSubview(comingSoonLabel)
-        constraints.append(contentsOf: comingSoonLabel.anchors(leading: nil, trailing: buyButton.trailingAnchor, top: buyButton.bottomAnchor, bottom: containerView.bottomAnchor, bottomConstant: -sidePadding))
-        
-        // Activate constraints
-        NSLayoutConstraint.activate(constraints)
+        bottomStackView.addArrangedSubview(descriptionLabel)
+        bottomStackView.addArrangedSubview(dateUrgencyStackView)
+        bottomStackView.addArrangedSubview(siretLabel)
     }
     
     /// Setup layout and populate content to views.
