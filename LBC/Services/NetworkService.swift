@@ -13,8 +13,8 @@ enum NetworkServiceError: Error {
     case invalidUrl
     case invalidResponse
     case serverError
-    case requestFailed(_: Error)
-    case decodingFailed(_: Error)
+    case requestFailed
+    case decodingFailed
 }
 
 protocol NetworkServiceInterface {
@@ -50,7 +50,7 @@ struct NetworkService: NetworkServiceInterface {
                 if let networkServiceError = error as? NetworkServiceError {
                     return networkServiceError
                 } else {
-                    return NetworkServiceError.requestFailed(error)
+                    return NetworkServiceError.requestFailed
                 }
             }
             .eraseToAnyPublisher()
@@ -65,14 +65,14 @@ struct NetworkService: NetworkServiceInterface {
         let categories = fetch(for: Constants.NetworkService.categoriesUrl)
             .decode(type: [CategoryModel].self, decoder: JSONDecoder())
             .mapError { error -> NetworkServiceError in
-                return NetworkServiceError.decodingFailed(error)
+                return NetworkServiceError.decodingFailed
             }
             .eraseToAnyPublisher()
-        
+            
         let products = fetch(for: Constants.NetworkService.productsUrl)
             .decode(type: [ProductModel].self, decoder: JSONDecoder())
             .mapError { error -> NetworkServiceError in
-                return NetworkServiceError.decodingFailed(error)
+                return NetworkServiceError.decodingFailed
             }
             .eraseToAnyPublisher()
         
@@ -89,7 +89,7 @@ struct NetworkService: NetworkServiceInterface {
                 
                 return completedProducts
             }
-            .eraseToAnyPublisher()
+            .eraseToAnyPublisher()             
     }
     
 }

@@ -83,14 +83,19 @@ final class ProductsViewModel: ProductsViewModelInterface {
         let title: String = "Le téléchargement de l'image a échoué."
         let errorMessage: String
         
+        // Improvements
+        // send error localized message to private analytics domain.
+        // error.localizedDescription
+        // Use localizable strings.
+        
         switch error {
         case .invalidUrl:
             errorMessage = "L'url n'est pas valide."
         case .invalidResponse:
             errorMessage = "La réponse n'est pas valide."
-        case .decodingFailed(let error):
+        case .decodingFailed:
             errorMessage = "Le décodage des données a échoué"
-        case .requestFailed(let error):
+        case .requestFailed:
             errorMessage = "La requête a échoué."
         case .serverError:
             errorMessage = "Le serveur a rencontré une erreur."
