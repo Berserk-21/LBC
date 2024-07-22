@@ -108,7 +108,7 @@ extension ProductsViewController {
             .compactMap({ $0 })
             .sink { [weak self] error in
                 guard let self = self else { return }
-                self.presentError(error, on: self)
+                self.presentError(title: error.title, message: error.message, on: self)
             }
             .store(in: &cancellables)
     }

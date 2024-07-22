@@ -190,9 +190,9 @@ final class ProductDetailViewController: UIViewController {
         
         viewModel.imageDataErrorPublisher
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] error in
+            .sink { [weak self] alertError in
                 guard let self = self else { return }
-                self.presentError(error, on: self)
+                self.presentError(title: alertError.title, message: alertError.message, on: self)
             }
             .store(in: &cancellables)
     }

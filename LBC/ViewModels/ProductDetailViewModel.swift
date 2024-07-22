@@ -17,7 +17,7 @@ protocol ProductDetailViewModelInterface {
     var isUrgent: Bool { get }
     var siret: String? { get }
     var imageDataPublisher: AnyPublisher<Data?, Never> { get }
-    var imageDataErrorPublisher: AnyPublisher<Error, Never> { get }
+    var imageDataErrorPublisher: AnyPublisher<AlertErrorModel, Never> { get }
     
     func loadImage()
 }
@@ -68,10 +68,11 @@ final class ProductDetailViewModel: ProductDetailViewModelInterface {
         return $imageData.eraseToAnyPublisher()
     }
     
-    @Published var imageDataError: Error?
-    var imageDataErrorPublisher: AnyPublisher<Error, Never> {
+    @Published var imageDataError: ImageDownloadError?
+    var imageDataErrorPublisher: AnyPublisher<AlertErrorModel, Never> {
         return $imageDataError
             .compactMap({ $0 })
+            .map({ self.formatError($0) })
             .eraseToAnyPublisher()
     }
     
@@ -115,6 +116,34 @@ final class ProductDetailViewModel: ProductDetailViewModelInterface {
         // Not selling free products here :p
         guard product.price > 0.0, let stringPrice = formatter.string(from: NSNumber(floatLiteral: product.price)) else { return Constants.HomeCollectionViewCell.invalidPriceText }
         return stringPrice
+    }
+    
+    /// Uses this method to format an Error to a String.
+    private func formatError(_ error: ImageDownloadError) -> AlertErrorModel {
+        
+        let title: String = "Le téléchargement de l'image a échoué."
+        let errorMessage: String
+        
+        switch error {
+        case .invalidUrl:
+            errorMessage = "L'url n'est pas valide."
+        case .invalidResponse:
+            errorMessage = "La réponse n'est pas valide."
+        case .statusCode(let statusCode):
+            switch statusCode {
+            case 400..<500:
+                errorMessage = "La requête n'est pas autorisée."
+            case 500..<600:
+                errorMessage = "Le serveur a rencontré une erreur."
+            default:
+                errorMessage = error.localizedDescription
+            }
+            
+        case .unknow(let error):
+            errorMessage = error.localizedDescription
+        }
+        
+        return AlertErrorModel(title: title, message: errorMessage)
     }
     
     /// Uses this method to fetch the thumbnail Image reactively.

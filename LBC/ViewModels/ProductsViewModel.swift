@@ -17,7 +17,7 @@ protocol ProductsViewModelInterface {
     // Outputs
     var products: [ProductModel] { get }
     var didFetchDataPublisher: AnyPublisher<[ProductModel], Never> { get }
-    var didFetchDataWithErrorPublisher: AnyPublisher<NetworkServiceError, Never> { get }
+    var didFetchDataWithErrorPublisher: AnyPublisher<AlertErrorModel, Never> { get }
     var viewWillLayoutSubviewsPublisher: AnyPublisher<Void, Never> { get }
 }
 
@@ -35,9 +35,10 @@ final class ProductsViewModel: ProductsViewModelInterface {
     }
     
     @Published private var error: NetworkServiceError?
-    var didFetchDataWithErrorPublisher: AnyPublisher<NetworkServiceError, Never> {
+    var didFetchDataWithErrorPublisher: AnyPublisher<AlertErrorModel, Never> {
         $error
             .compactMap({ $0 })
+            .map({ self.formatError($0) })
             .eraseToAnyPublisher()
     }
     
@@ -75,5 +76,26 @@ final class ProductsViewModel: ProductsViewModelInterface {
     func viewWillLayoutSubviews() {
         // Do any work to filter changes.
         viewWillLayoutSubviewsSubject.send()
+    }
+    
+    private func formatError(_ error: NetworkServiceError) -> AlertErrorModel {
+        
+        let title: String = "Le téléchargement de l'image a échoué."
+        let errorMessage: String
+        
+        switch error {
+        case .invalidUrl:
+            errorMessage = "L'url n'est pas valide."
+        case .invalidResponse:
+            errorMessage = "La réponse n'est pas valide."
+        case .decodingFailed(let error):
+            errorMessage = "Le décodage des données a échoué"
+        case .requestFailed(let error):
+            errorMessage = "La requête a échoué."
+        case .serverError:
+            errorMessage = "Le serveur a rencontré une erreur."
+        }
+        
+        return AlertErrorModel(title: title, message: errorMessage)
     }
 }
