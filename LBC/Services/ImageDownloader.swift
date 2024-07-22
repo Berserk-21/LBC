@@ -42,8 +42,8 @@ final class ImageDownloader: ImageDownloaderInterface {
                 return data
             }
             .mapError({ error -> NetworkServiceError in
-                if let imageDownloadError = error as? NetworkServiceError {
-                    return imageDownloadError
+                if let networkServiceError = error as? NetworkServiceError {
+                    return networkServiceError
                 } else {
                     return .unknown(error)
                 }
