@@ -171,7 +171,7 @@ final class ProductDetailViewModel: ProductDetailViewModelInterface {
                 }
             }, receiveValue: { [weak self] data in
                 self?.imageData = data
-                CacheService.shared.setImage(data, forKey: thumbUrlString)
+                self?.cacheService.setImage(data, forKey: thumbUrlString)
             })
             .store(in: &cancellables)
     }
