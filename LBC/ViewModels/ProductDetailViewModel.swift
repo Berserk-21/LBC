@@ -46,40 +46,16 @@ final class ProductDetailViewModel: ProductDetailViewModelInterface {
         return product.description
     }
     
-    private var formattedPrice: String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.currencyCode = Locale.current.currencyCode ?? "EUR"
-        
-        // Not selling free products here :p
-        guard product.price > 0.0, let stringPrice = formatter.string(from: NSNumber(floatLiteral: product.price)) else { return Constants.HomeCollectionViewCell.invalidPriceText }
-        return stringPrice
-    }
-    
     var price: String {
-        return formattedPrice
-    }
-    
-    private var formattedDate: String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        guard let date = dateFormatter.date(from: product.creationDate) else {
-            return product.creationDate
-        }
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .none
-        return dateFormatter.string(from: date)
+        return formatPrice(from: product.price)
     }
     
     var date: String {
-        return formattedDate
+        return formatDate(from: product.creationDate)
     }
     
     private var formattedSiret: String? {
-        if let siret = product.siret {
-            return "Siret: \(String(describing: siret))"
-        }
-        return nil
+        return formatSiret(from: product.siret)
     }
     
     var siret: String? {
@@ -99,6 +75,39 @@ final class ProductDetailViewModel: ProductDetailViewModelInterface {
     }
     
     // MARK: - Fetch Data
+    
+    /// Use this method to reformat a date String.
+    private func formatDate(from: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        guard let date = dateFormatter.date(from: product.creationDate) else {
+            return product.creationDate
+        }
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .none
+        return dateFormatter.string(from: date)
+    }
+    
+    /// Use this method to format the siret String.
+    private func formatSiret(from siret: String?) -> String? {
+        
+        guard let siret = product.siret else {
+            return nil
+        }
+        
+        return "Siret: \(String(describing: siret))"
+    }
+    
+    /// Use this method to format price to a String.
+    private func formatPrice(from price: CGFloat) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencyCode = Locale.current.currencyCode ?? "EUR"
+        
+        // Not selling free products here :p
+        guard product.price > 0.0, let stringPrice = formatter.string(from: NSNumber(floatLiteral: product.price)) else { return Constants.HomeCollectionViewCell.invalidPriceText }
+        return stringPrice
+    }
     
     /// Uses this method to fetch the thumbnail Image reactively.
     func loadImage() {
