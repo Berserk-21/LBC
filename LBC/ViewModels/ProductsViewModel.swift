@@ -38,7 +38,7 @@ final class ProductsViewModel: ProductsViewModelInterface {
     var didFetchDataWithErrorPublisher: AnyPublisher<AlertErrorModel, Never> {
         $error
             .compactMap({ $0 })
-            .map({ FormatterUtility.formatError($0) })
+            .map({ FormatterUtility.shared.formatError($0) })
             .eraseToAnyPublisher()
     }
     

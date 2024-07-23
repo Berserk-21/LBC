@@ -15,8 +15,9 @@ enum NetworkServiceError: Error {
     case requestFailed
     case cancelled
     case decodingFailed
-    case unknown(_: Error)
-    case statusCode(_: Int)
+    case unauthorized
+    case serverFailed
+    case unknown
 }
 
 protocol NetworkServiceInterface {
@@ -43,7 +44,13 @@ struct NetworkService: NetworkServiceInterface {
                 }
                 
                 guard (200...299).contains(httpResponse.statusCode) else {
-                    throw NetworkServiceError.statusCode(httpResponse.statusCode)
+                    if (400...499).contains(httpResponse.statusCode) {
+                        throw NetworkServiceError.unauthorized
+                    } else if (500...599).contains(httpResponse.statusCode) {
+                        throw NetworkServiceError.serverFailed
+                    } else {
+                        throw NetworkServiceError.unknown
+                    }
                 }
                 
                 return result.data

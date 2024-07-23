@@ -48,15 +48,15 @@ final class ProductDetailViewModel: ProductDetailViewModelInterface {
     }
     
     var price: String {
-        return FormatterUtility.formatPrice(from: product.price)
+        return FormatterUtility.shared.formatPrice(from: product.price)
     }
     
     var date: String {
-        return FormatterUtility.formatDateFrom(string: product.creationDate)
+        return FormatterUtility.shared.formatDateFrom(string: product.creationDate)
     }
     
     var siret: String? {
-        return FormatterUtility.formatSiret(from: product.siret)
+        return FormatterUtility.shared.formatSiret(from: product.siret)
     }
     
     var imageUrlString: String? {
@@ -72,7 +72,7 @@ final class ProductDetailViewModel: ProductDetailViewModelInterface {
     var imageDataErrorPublisher: AnyPublisher<AlertErrorModel, Never> {
         return $imageDataError
             .compactMap({ $0 })
-            .map({ FormatterUtility.formatError($0) })
+            .map({ FormatterUtility.shared.formatError($0) })
             .eraseToAnyPublisher()
     }
     

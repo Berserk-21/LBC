@@ -51,8 +51,14 @@ final class FetchImageService: FetchImageServiceInterface {
                     throw URLError(.badServerResponse)
                 }
                 
-                guard httpResponse.statusCode == 200 else {
-                    throw NetworkServiceError.statusCode(httpResponse.statusCode)
+                guard (200...299).contains(httpResponse.statusCode) else {
+                    if (400...499).contains(httpResponse.statusCode) {
+                        throw NetworkServiceError.unauthorized
+                    } else if (500...599).contains(httpResponse.statusCode) {
+                        throw NetworkServiceError.serverFailed
+                    } else {
+                        throw NetworkServiceError.unknown
+                    }
                 }
                 
                 self.cacheService.setImage(data, forKey: urlString)
@@ -60,7 +66,7 @@ final class FetchImageService: FetchImageServiceInterface {
                 return data
             }
             .mapError({ error -> NetworkServiceError in
-                return error as? NetworkServiceError ?? .unknown(error)
+                return error as? NetworkServiceError ?? .unknown
             })
             .eraseToAnyPublisher()
     }

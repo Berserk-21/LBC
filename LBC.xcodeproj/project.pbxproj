@@ -35,6 +35,7 @@
 		2C8C20EB2C08D93900628BE2 /* itemProducts.json in Resources */ = {isa = PBXBuildFile; fileRef = 2C8C20EA2C08D93900628BE2 /* itemProducts.json */; };
 		2CD8EF2C2C4E58CA00944038 /* ErrorPresenterInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD8EF2B2C4E58CA00944038 /* ErrorPresenterInterface.swift */; };
 		2CD8EF4E2C4EB51200944038 /* FormatterUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD8EF4D2C4EB51200944038 /* FormatterUtility.swift */; };
+		2CD8EF502C4FDA5200944038 /* FormatterUtilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD8EF4F2C4FDA5200944038 /* FormatterUtilityTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,7 @@
 		2C8C20EA2C08D93900628BE2 /* itemProducts.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = itemProducts.json; sourceTree = "<group>"; };
 		2CD8EF2B2C4E58CA00944038 /* ErrorPresenterInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorPresenterInterface.swift; sourceTree = "<group>"; };
 		2CD8EF4D2C4EB51200944038 /* FormatterUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterUtility.swift; sourceTree = "<group>"; };
+		2CD8EF4F2C4FDA5200944038 /* FormatterUtilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterUtilityTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,7 +141,6 @@
 			children = (
 				2CD8EF282C4E530700944038 /* Tests */,
 				2CD8EF292C4E53CE00944038 /* Extensions */,
-				2C8C20DF2C078BBB00628BE2 /* Json */,
 				2C8C20D62C07847300628BE2 /* Mocks */,
 			);
 			path = LBCTests;
@@ -229,18 +230,12 @@
 			path = Mocks;
 			sourceTree = "<group>";
 		};
-		2C8C20DF2C078BBB00628BE2 /* Json */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Json;
-			sourceTree = "<group>";
-		};
 		2CD8EF282C4E530700944038 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				2C2EE3F72C07164500BDC1FD /* HomeViewModelTests.swift */,
 				2C8C20E42C08CF8200628BE2 /* ItemViewModelTests.swift */,
+				2CD8EF4F2C4FDA5200944038 /* FormatterUtilityTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -393,6 +388,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C8C20E72C08D2DC00628BE2 /* URLProtocolMock.swift in Sources */,
+				2CD8EF502C4FDA5200944038 /* FormatterUtilityTests.swift in Sources */,
 				2C8C20DA2C078AD400628BE2 /* XCTestCase+Extension.swift in Sources */,
 				2C8C20E52C08CF8200628BE2 /* ItemViewModelTests.swift in Sources */,
 				2C8C20D82C0784B700628BE2 /* MockNetworkService.swift in Sources */,

@@ -7,11 +7,22 @@
 
 import Foundation
 
-struct FormatterUtility {
+protocol FormatterUtilityInterface {
+    func formatDateFrom(string date: String) -> String
+    func formatSiret(from siret: String?) -> String?
+    func formatPrice(from price: CGFloat) -> String
+    func formatError(_ error: NetworkServiceError) -> AlertErrorModel
+}
+
+struct FormatterUtility: FormatterUtilityInterface {
     
+    static let shared = FormatterUtility()
+    
+    private let dateFormatter = DateFormatter()
+    private let priceFormatter = NumberFormatter()
+
     /// Use this method to reformat a date String.
-    static func formatDateFrom(string date: String) -> String {
-        let dateFormatter = DateFormatter()
+    func formatDateFrom(string date: String) -> String {
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         guard let formattedDate = dateFormatter.date(from: date) else {
             return date
@@ -22,7 +33,7 @@ struct FormatterUtility {
     }
     
     /// Use this method to format the siret String.
-    static func formatSiret(from siret: String?) -> String? {
+    func formatSiret(from siret: String?) -> String? {
         
         guard let unwrappedSiret = siret else {
             return nil
@@ -32,20 +43,19 @@ struct FormatterUtility {
     }
     
     /// Use this method to format price to a String.
-    static func formatPrice(from price: CGFloat) -> String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.currencyCode = Locale.current.currencyCode ?? "EUR"
+    func formatPrice(from price: CGFloat) -> String {
+        priceFormatter.numberStyle = .currency
+        priceFormatter.currencyCode = Locale.current.currencyCode ?? "EUR"
         
         // Not selling free products here :p
-        guard price > 0.0, let stringPrice = formatter.string(from: NSNumber(floatLiteral: price)) else { return Constants.HomeCollectionViewCell.invalidPriceText }
+        guard price > 0.0, let stringPrice = priceFormatter.string(from: NSNumber(floatLiteral: price)) else { return Constants.HomeCollectionViewCell.invalidPriceText }
         return stringPrice
     }
     
     /// Uses this method to format an Error to a String.
-    static func formatError(_ error: NetworkServiceError) -> AlertErrorModel {
+    func formatError(_ error: NetworkServiceError) -> AlertErrorModel {
         
-        let title: String = "Le téléchargement de l'image a échoué."
+        let title: String = "La requête a échoué"
         let errorMessage: String
         
         switch error {
@@ -57,19 +67,15 @@ struct FormatterUtility {
             errorMessage = "Vérifiez votre connexion internet et réessayez !"
         case .decodingFailed:
             errorMessage = "Le décodage des données a échoué"
-        case .statusCode(let statusCode):
-            switch statusCode {
-            case 400..<500:
-                errorMessage = "La requête n'est pas autorisée."
-            case 500..<600:
-                errorMessage = "Le serveur a rencontré une erreur."
-            default:
-                errorMessage = error.localizedDescription
-            }
-        case .unknown(let error):
-            errorMessage = error.localizedDescription
         case .cancelled:
-            errorMessage = "La requête est annulée."
+            errorMessage = "La requête a été annulée."
+        case .unauthorized:
+            errorMessage = "La requête n'est pas autorisée."
+        case .serverFailed:
+            errorMessage = "Le serveur a rencontré une erreur."
+        case .unknown:
+            errorMessage = "Une erreur inconnue s'est produite."
+
         }
         
         return AlertErrorModel(title: title, message: errorMessage)
